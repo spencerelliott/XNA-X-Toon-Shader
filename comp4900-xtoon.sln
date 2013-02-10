@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "comp4900-xtoon", "comp4900-xtoon\comp4900-xtoon\comp4900-xtoon.csproj", "{24172DC8-4263-4847-AFFA-A811449293B7}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "comp4900-xtoonContent", "comp4900-xtoon\comp4900-xtoonContent\comp4900-xtoonContent.contentproj", "{A30C8321-0823-48DD-AD39-04ED676365A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24172DC8-4263-4847-AFFA-A811449293B7}.Debug|x86.ActiveCfg = Debug|x86
+		{24172DC8-4263-4847-AFFA-A811449293B7}.Debug|x86.Build.0 = Debug|x86
+		{24172DC8-4263-4847-AFFA-A811449293B7}.Release|x86.ActiveCfg = Release|x86
+		{24172DC8-4263-4847-AFFA-A811449293B7}.Release|x86.Build.0 = Release|x86
+		{A30C8321-0823-48DD-AD39-04ED676365A6}.Debug|x86.ActiveCfg = Debug|x86
+		{A30C8321-0823-48DD-AD39-04ED676365A6}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
