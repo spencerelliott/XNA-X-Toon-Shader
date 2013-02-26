@@ -18,16 +18,13 @@ sampler	Sampler = sampler_state {
 	AddressV = Wrap;
 };
 
-// TODO: add effect parameters here.
+// Shader Inputs
 
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
 	float3 Normal : NORMAL0;
 	float2 TexCoord : TEXCOORD0;
-
-    // TODO: add input channels such as texture
-    // coordinates and vertex colors here.
 };
 
 struct PixelShaderInput 
@@ -36,15 +33,13 @@ struct PixelShaderInput
 	float LightAmount : TEXCOORD1;
 };
 
+// Shader Outputs
+
 struct VertexShaderOutput
 {
     float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
 	float LightAmount : TEXCOORD1;
-
-    // TODO: add vertex shader outputs such as colors and texture
-    // coordinates here. These values will automatically be interpolated
-    // over the triangle, and provided as input to your pixel shader.
 };
 
 struct NormalDepthVertexShaderOutput 
@@ -52,6 +47,8 @@ struct NormalDepthVertexShaderOutput
 	float4 Position : POSITION0;
 	float4 Color : COLOR0;
 };
+
+// Shader code
 
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
@@ -65,8 +62,6 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	output.LightAmount = dot(worldNormal, LightDirection);
 
 	output.TexCoord = input.TexCoord;
-
-    // TODO: add your vertex shader code here.
 
     return output;
 }

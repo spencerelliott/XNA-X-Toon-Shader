@@ -47,9 +47,11 @@ float4 PixelShaderFunction(float2 TexCoord : TEXCOORD0) : COLOR0
 	float depthDelta = diagonalDelta.w;
 
 	normalDelta = saturate((normalDelta - NormalThreshold) * NormalSensitivity);
+	depthDelta = saturate((depthDelta - DepthThreshold) * DepthSensitivity);
+
 	float edgeAmount = saturate(normalDelta + depthDelta) * EdgeIntensity;
 
-	scene *= 1 - edgeAmount;
+	scene *= (1 - edgeAmount);
 
 	return float4(scene, 1);
 }
