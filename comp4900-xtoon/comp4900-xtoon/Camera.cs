@@ -14,6 +14,8 @@ namespace comp4900_xtoon
         private Matrix _projectionMatrix;
 
         private float _cameraYaw;
+        private float _cameraRoll;
+        private float _cameraPitch;
         private float _aspectRatio;
 
         private const int NEAR_CLIPPING_DISTANCE = 1000;
@@ -29,13 +31,27 @@ namespace comp4900_xtoon
             _upVector = Vector3.Up;
 
             _cameraYaw = 1.0f;
+            _cameraRoll = 0.0f;
+            _cameraPitch = 0.0f;
         }
 
         public float CameraYaw
         {
             get { return _cameraYaw; }
             set { _cameraYaw = value; }
-        } 
+        }
+
+        public float CameraRoll
+        {
+            get { return _cameraRoll; }
+            set { _cameraRoll = value; }
+        }
+
+        public float CameraPitch
+        {
+            get { return _cameraPitch; }
+            set { _cameraPitch = value; }
+        }
 
         public Vector3 LookAt
         {
@@ -59,9 +75,7 @@ namespace comp4900_xtoon
 
         public void Update()
         {
-            _rotationMatrix = Matrix.CreateRotationY(_cameraYaw);
-            //Vector3 transformedReference = Vector3.Transform(new Vector3(0, 0, -1), _rotationMatrix);
-            //_lookAt = Position + transformedReference;
+            _rotationMatrix = Matrix.CreateRotationY(_cameraYaw) * Matrix.CreateRotationX(_cameraRoll) * Matrix.CreateRotationZ(_cameraPitch);
             _viewMatrix = Matrix.CreateLookAt(Position, _lookAt, _upVector);
         }
     }

@@ -109,32 +109,48 @@ namespace comp4900_xtoon
         {
             KeyboardState newState = Keyboard.GetState();
             const int offset = 50;
+            const float rotateAmount = 0.05f;
 
-            /*
             if (newState.IsKeyDown(Keys.W))
-            {
-                cam.Position.Z += offset;
-            }
-            if (newState.IsKeyDown(Keys.S))
-            {
-                cam.Position.Z -= offset;
-            }
-            if (newState.IsKeyDown(Keys.A))
             {
                 cam.Position.X -= offset;
             }
-            if (newState.IsKeyDown(Keys.D))
+            if (newState.IsKeyDown(Keys.S))
             {
                 cam.Position.X += offset;
             }
-            */
-            if (newState.IsKeyDown(Keys.E))
+            if (newState.IsKeyDown(Keys.A))
             {
-                cam.CameraYaw += 0.05f;
+                cam.CameraYaw += rotateAmount;
+            }
+            if (newState.IsKeyDown(Keys.D))
+            {
+                cam.CameraYaw -= rotateAmount;
+            }
+
+            if (newState.IsKeyDown(Keys.Down))
+            {
+                cam.Position.Y -= offset;
+            }
+            if (newState.IsKeyDown(Keys.Up))
+            {
+                cam.Position.Y += offset;
+            }
+            if (newState.IsKeyDown(Keys.Left))
+            {
+                cam.CameraRoll -= rotateAmount;
+            }
+            if (newState.IsKeyDown(Keys.Right))
+            {
+                cam.CameraRoll += rotateAmount;
             }
             if (newState.IsKeyDown(Keys.Q))
             {
-                cam.CameraYaw -= 0.05f;
+                cam.CameraPitch -= rotateAmount;
+            }
+            if (newState.IsKeyDown(Keys.Z))
+            {
+                cam.CameraPitch += rotateAmount;
             }
 
             // Save state
