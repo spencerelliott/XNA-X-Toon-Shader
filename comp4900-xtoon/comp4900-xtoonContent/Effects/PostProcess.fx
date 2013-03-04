@@ -37,10 +37,11 @@ float4 PixelShaderFunction(float2 TexCoord : TEXCOORD0) : COLOR0
 
 	float2 edgeOffset = EdgeWidth / ScreenResolution;
 	
-	float4 n1 = tex2D(NormalDepthSampler, TexCoord + float2(-1, -1));
-	float4 n2 = tex2D(NormalDepthSampler, TexCoord + float2(1, 1));
-	float4 n3 = tex2D(NormalDepthSampler, TexCoord + float2(-1, 1));
-	float4 n4 = tex2D(NormalDepthSampler, TexCoord + float2(1, -1));
+	float4 n1 = tex2D(NormalDepthSampler, TexCoord + float2(-1, -1) * edgeOffset);
+	float4 n2 = tex2D(NormalDepthSampler, TexCoord + float2(1, 1) * edgeOffset);
+	float4 n3 = tex2D(NormalDepthSampler, TexCoord + float2(-1, 1) * edgeOffset);
+	float4 n4 = tex2D(NormalDepthSampler, TexCoord + float2(1, -1) * edgeOffset);
+
 
 	float4 diagonalDelta = abs(n1 - n2) + abs(n3 - n4);
 	float normalDelta = dot(diagonalDelta.xyz, 1);
