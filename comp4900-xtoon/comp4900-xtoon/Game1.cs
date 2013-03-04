@@ -29,6 +29,10 @@ namespace comp4900_xtoon
         RenderTarget2D sceneRenderTarget;
         RenderTarget2D normalRenderTarget;
 
+        Camera cam;
+
+        KeyboardState oldState;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,6 +47,10 @@ namespace comp4900_xtoon
         /// </summary>
         protected override void Initialize()
         {
+            cam = new Camera(graphics.GraphicsDevice.Viewport);
+
+            oldState = Keyboard.GetState();
+
             // Initialize shaders
             celShader = Content.Load<Effect>(@"Effects\Cel");
             postProcessEffect = Content.Load<Effect>(@"Effects\PostProcess");
@@ -91,9 +99,46 @@ namespace comp4900_xtoon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            // TODO: Add your update logic here
+            UpdateInput();
+            cam.Update();
 
             base.Update(gameTime);
+        }
+
+        private void UpdateInput()
+        {
+            KeyboardState newState = Keyboard.GetState();
+            const int offset = 50;
+
+            /*
+            if (newState.IsKeyDown(Keys.W))
+            {
+                cam.Position.Z += offset;
+            }
+            if (newState.IsKeyDown(Keys.S))
+            {
+                cam.Position.Z -= offset;
+            }
+            if (newState.IsKeyDown(Keys.A))
+            {
+                cam.Position.X -= offset;
+            }
+            if (newState.IsKeyDown(Keys.D))
+            {
+                cam.Position.X += offset;
+            }
+            */
+            if (newState.IsKeyDown(Keys.E))
+            {
+                cam.CameraYaw += 0.05f;
+            }
+            if (newState.IsKeyDown(Keys.Q))
+            {
+                cam.CameraYaw -= 0.05f;
+            }
+
+            // Save state
+            oldState = newState;
         }
 
         /// <summary>
@@ -104,22 +149,15 @@ namespace comp4900_xtoon
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Normally done by a camera class of some sort
-            Viewport viewport = graphics.GraphicsDevice.Viewport;
-            float aspectRatio = (float)viewport.Width / (float)viewport.Height;
-            Matrix rotation = Matrix.CreateRotationY(1.0f);
-            Matrix view = Matrix.CreateLookAt(new Vector3(3000, 3000, 0), new Vector3(0, 1500, 0), Vector3.Up);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1000, 10000);
-
             // Normal Depth drawing
             graphics.GraphicsDevice.SetRenderTarget(normalRenderTarget);
             graphics.GraphicsDevice.Clear(Color.Black);
-            DrawModel(rotation, view, projection, "NormalDepth", theModel);
+            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "NormalDepth", theModel);
 
             // Toon Effect
             graphics.GraphicsDevice.SetRenderTarget(sceneRenderTarget);
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-            DrawModel(rotation, view, projection, "ToonShader", theModel);
+            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel);
 
             // Post-processing
             graphics.GraphicsDevice.SetRenderTarget(null);
