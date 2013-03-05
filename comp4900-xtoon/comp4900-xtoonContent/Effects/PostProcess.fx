@@ -10,9 +10,11 @@ float2 ScreenResolution;
 
 texture SceneTexture;
 
+bool UseToon = true;
+bool DrawOutline = true;
+
 sampler SceneSampler : register(s0) = sampler_state
 {
-	
 	Texture = (SceneTexture);
 	MinFilter = Linear;
 	MagFilter = Linear;
@@ -34,6 +36,10 @@ sampler NormalDepthSampler : register(s1) = sampler_state
 float4 PixelShaderFunction(float2 TexCoord : TEXCOORD0) : COLOR0 
 {
 	float3 scene = tex2D(SceneSampler, TexCoord);
+
+	if (UseToon == false || DrawOutline == false) {
+		return float4(scene, 1);
+	}
 
 	float2 edgeOffset = EdgeWidth / ScreenResolution;
 	

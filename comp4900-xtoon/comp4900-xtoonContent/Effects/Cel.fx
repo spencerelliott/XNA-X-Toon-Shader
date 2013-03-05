@@ -9,6 +9,8 @@ float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
 bool TextureEnabled;
 texture Texture;
 
+bool UseToon = true;
+
 sampler	Sampler = sampler_state {
 	Texture = (Texture);
 	MinFilter = Linear;
@@ -69,6 +71,10 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 	float4 color = TextureEnabled ? tex2D(Sampler, input.TexCoord) : 0;
+
+	if (UseToon == false) {
+		return color;
+	}
 
     float light;
 
