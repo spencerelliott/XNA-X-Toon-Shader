@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Ruminate.Utils;
 
 namespace comp4900_xtoon
 {
@@ -33,10 +35,23 @@ namespace comp4900_xtoon
 
         KeyboardState oldState;
 
+        // GUI stuff
+        GuiManager gui;
+        public SpriteFont GreySpriteFont;
+        public Texture2D GreyImageMap;
+        public string GreyMap;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            /* In case we allow user to resize window
+            Window.ClientSizeChanged += delegate
+            {
+                if (gui != null) { gui.OnResize(); }
+            };
+             */
         }
 
         /// <summary>
@@ -47,9 +62,16 @@ namespace comp4900_xtoon
         /// </summary>
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferWidth = 1067;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.ApplyChanges();
+            IsMouseVisible = true;
+
             cam = new Camera(graphics.GraphicsDevice.Viewport);
 
             oldState = Keyboard.GetState();
+
+            gui = new GuiManager();
 
             // Initialize shaders
             celShader = Content.Load<Effect>(@"Effects\Cel");
@@ -76,6 +98,14 @@ namespace comp4900_xtoon
 
             theModel = Content.Load<Model>(@"Models\dude");
 
+            GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
+            GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();
+            GreySpriteFont = Content.Load<SpriteFont>(@"GreySkin\Texture");
+
+            DebugUtils.Init(graphics.GraphicsDevice, GreySpriteFont);
+
+            gui.Initialize(this);
+
             ChangeEffectUsedByModel(theModel, celShader);
         }
 
@@ -99,6 +129,7 @@ namespace comp4900_xtoon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            gui.Update();
             UpdateInput();
             cam.Update();
 
@@ -179,6 +210,8 @@ namespace comp4900_xtoon
             graphics.GraphicsDevice.SetRenderTarget(null);
             ApplyPostProcess("EdgeDetect");
 
+            gui.Draw();
+
             base.Draw(gameTime);
         }
 
@@ -224,6 +257,7 @@ namespace comp4900_xtoon
                     effect.Parameters["World"].SetValue(localWorld);
                     effect.Parameters["View"].SetValue(view);
                     effect.Parameters["Projection"].SetValue(projection);
+                    effect.Parameters["UseToon"].SetValue(gui.UseToon);
                 }
                 mesh.Draw();
             }
@@ -234,10 +268,12 @@ namespace comp4900_xtoon
             EffectParameterCollection parameters = postProcessEffect.Parameters;
             Vector2 resolution = new Vector2(sceneRenderTarget.Width, sceneRenderTarget.Height);
             Texture2D normalDepthTexture = normalRenderTarget;
-            parameters["EdgeWidth"].SetValue(1);
-            parameters["EdgeIntensity"].SetValue(1);
+            parameters["EdgeWidth"].SetValue(gui.EdgeWidth);
+            parameters["EdgeIntensity"].SetValue(gui.EdgeIntensity);
             parameters["ScreenResolution"].SetValue(resolution);
             parameters["NormalDepthTexture"].SetValue(normalDepthTexture);
+            parameters["UseToon"].SetValue(gui.UseToon);
+            parameters["DrawOutline"].SetValue(gui.DrawOutline);
 
             postProcessEffect.CurrentTechnique = postProcessEffect.Techniques[effectTechniqueName];
             
