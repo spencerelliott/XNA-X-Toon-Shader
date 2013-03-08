@@ -41,6 +41,9 @@ namespace comp4900_xtoon
         public Texture2D GreyImageMap;
         public string GreyMap;
 
+        public Texture2D Tone1DDetailTexture;
+        public Texture2D Tone2DDetailTexture;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -101,6 +104,9 @@ namespace comp4900_xtoon
             GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
             GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();
             GreySpriteFont = Content.Load<SpriteFont>(@"GreySkin\Texture");
+
+            Tone1DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\cel_shading");
+            Tone2DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_gray");
 
             DebugUtils.Init(graphics.GraphicsDevice, GreySpriteFont);
 
@@ -258,6 +264,9 @@ namespace comp4900_xtoon
                     effect.Parameters["View"].SetValue(view);
                     effect.Parameters["Projection"].SetValue(projection);
                     effect.Parameters["UseToon"].SetValue(gui.UseToon);
+                    effect.Parameters["ToneTexture"].SetValue(gui.UseXToon ? Tone2DDetailTexture : Tone1DDetailTexture);
+                    effect.Parameters["Use2D"].SetValue(gui.UseXToon);
+                    effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
                 }
                 mesh.Draw();
             }

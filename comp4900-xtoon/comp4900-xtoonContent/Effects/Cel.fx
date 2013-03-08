@@ -6,6 +6,18 @@ float3 LightDirection = normalize(float3(1,1,1));
 float ToonThresholds[2] = { 0.8, 0.4 };
 float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
 
+texture ToneTexture;
+bool Use2D = false;
+float DetailAdjustment = 1.0f;
+
+sampler ToonSampler = sampler_state {
+	Texture = (ToneTexture);
+	MinFilter = Linear;
+	MagFilter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
 bool TextureEnabled;
 texture Texture;
 
@@ -42,6 +54,7 @@ struct VertexShaderOutput
     float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
 	float LightAmount : TEXCOORD1;
+	float Z : TEXCOORD2;
 };
 
 struct NormalDepthVertexShaderOutput 
@@ -65,6 +78,8 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 	output.TexCoord = input.TexCoord;
 
+	output.Z = output.Position.z;
+
     return output;
 }
 
@@ -78,15 +93,25 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float light;
 
-	if(input.LightAmount > ToonThresholds[0]) {
+	/*if(input.LightAmount > ToonThresholds[0]) {
 		light = ToonBrightnessLevels[0];
 	} else if(input.LightAmount > ToonThresholds[1]) {
 		light = ToonBrightnessLevels[1];
 	} else {
 		light = ToonBrightnessLevels[2];
-	}
+	}*/
 
-	color.rgb *= light;
+	float x = (input.LightAmount * 31);
+	float y = (input.Z/30) - DetailAdjustment;
+
+	if(x > 31) x = 31;
+
+	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
+
+	light = texSample.g;
+
+	//color.rgb *= light;
+	color.rgb = texSample.rgb;
 
     return color;
 }

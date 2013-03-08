@@ -1,10 +1,13 @@
 Content\Effects\Cel.xnb
 Content\Effects\PostProcess.xnb
+Content\GreySkin\ImageMap.xnb
+Content\GreySkin\Texture.xnb
 Content\Models\dude.xnb
 Content\Models\head_0.xnb
 Content\Models\jacket_0.xnb
 Content\Models\pants_0.xnb
 Content\Models\upBodyC_0.xnb
-Content\GreySkin\ImageMap.xnb
-Content\GreySkin\Texture.xnb
+Content\ToneTextures\cel_shading.xnb
+Content\ToneTextures\xtoon_shading.xnb
+Content\ToneTextures\xtoon_shading_gray.xnb
 Content\GreySkin\Map.txt
