@@ -15,7 +15,7 @@ namespace comp4900_xtoon
         ToggleButton useToonButton, drawOutlineButton, useXToon;
         const float maxEdgeWidth = 10.0f;
         const float maxEdgeIntensity = 10.0f;
-        const float maxDetail = 500.0f;
+        const float maxDetail = 1000.0f;
         Slider edgeWidth, edgeIntensity, detailAdjustment;
         Label edgeWidthLabel, edgeIntensityLabel, detailAdjustmentLabel;
 
