@@ -200,7 +200,7 @@ namespace comp4900_xtoon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             // Normal Depth drawing
             graphics.GraphicsDevice.SetRenderTarget(normalRenderTarget);
@@ -209,7 +209,7 @@ namespace comp4900_xtoon
 
             // Toon Effect
             graphics.GraphicsDevice.SetRenderTarget(sceneRenderTarget);
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(new Color(131, 125, 151));
             DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel);
 
             // Post-processing
@@ -266,6 +266,7 @@ namespace comp4900_xtoon
                     effect.Parameters["UseToon"].SetValue(gui.UseToon);
                     effect.Parameters["ToneTexture"].SetValue(gui.UseXToon ? Tone2DDetailTexture : Tone1DDetailTexture);
                     effect.Parameters["Use2D"].SetValue(gui.UseXToon);
+                    effect.Parameters["UseTexture"].SetValue(gui.UseTextures);
                     effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
                 }
                 mesh.Draw();

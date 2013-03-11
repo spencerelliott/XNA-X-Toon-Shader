@@ -8,6 +8,7 @@ float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
 
 texture ToneTexture;
 bool Use2D = false;
+bool UseTexture = true;
 float DetailAdjustment = 1.0f;
 
 sampler ToonSampler = sampler_state {
@@ -91,7 +92,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 		return color;
 	}
 
-    float light;
+    float3 light;
 
 	/*if(input.LightAmount > ToonThresholds[0]) {
 		light = ToonBrightnessLevels[0];
@@ -108,10 +109,13 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 
-	light = texSample.g;
+	light = texSample.rgb;
 
-	//color.rgb *= light;
-	color.rgb = texSample.rgb;
+	if(UseTexture) {
+		color.rgb *= light;
+	} else {
+		color.rgb = texSample.rgb;
+	}
 
     return color;
 }

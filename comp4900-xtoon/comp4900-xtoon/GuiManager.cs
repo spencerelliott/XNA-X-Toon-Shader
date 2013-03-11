@@ -12,10 +12,10 @@ namespace comp4900_xtoon
     class GuiManager
     {
         Gui gui;
-        ToggleButton useToonButton, drawOutlineButton, useXToon;
+        ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton;
         const float maxEdgeWidth = 10.0f;
         const float maxEdgeIntensity = 10.0f;
-        const float maxDetail = 1000.0f;
+        const float maxDetail = 2000.0f;
         Slider edgeWidth, edgeIntensity, detailAdjustment;
         Label edgeWidthLabel, edgeIntensityLabel, detailAdjustmentLabel;
 
@@ -25,36 +25,42 @@ namespace comp4900_xtoon
             var text = new TextRenderer(game.GreySpriteFont, Color.White);
             const int margin = 10;
             const int buttonHeight = 40;
+
+            int i = 0;
+
             gui = new Gui(game, skin, text)
             {
                 Widgets = new Widget[] {
-                    useToonButton = new ToggleButton(margin, margin + (buttonHeight * 0), "Use Toon") {
+                    useToonButton = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Toon") {
                         IsToggled = true
                     },
-                    drawOutlineButton = new ToggleButton(margin, margin + (buttonHeight * 1), "Draw Outline") {
+                    drawOutlineButton = new ToggleButton(margin, margin + (buttonHeight * ++i), "Draw Outline") {
                         IsToggled = true
                     },
-                    useXToon = new ToggleButton(margin, margin + (buttonHeight * 2), "Use X-Toon") {
+                    useXToon = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use X-Toon") {
                         IsToggled = false
                     },
-                    edgeWidth = new Slider(margin, margin + (buttonHeight * 3), 150, delegate(Widget slider) {
+                    useTextureButton = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Textures") {
+                        IsToggled = true
+                    },
+                    edgeWidth = new Slider(margin, margin + (buttonHeight * ++i), 150, delegate(Widget slider) {
                         edgeWidthLabel.Value = "Edge Width = " + (((Slider)slider).Value * maxEdgeWidth);
                     }) {
                         Value = 1 / maxEdgeWidth
                     },
-                    edgeWidthLabel = new Label(margin, margin + (buttonHeight * 4), "Edge Width = 1.0"),
-                    edgeIntensity = new Slider(margin, margin + (buttonHeight * 5), 150, delegate(Widget slider) {
+                    edgeWidthLabel = new Label(margin, margin + (buttonHeight * ++i), "Edge Width = 1.0"),
+                    edgeIntensity = new Slider(margin, margin + (buttonHeight * ++i), 150, delegate(Widget slider) {
                         edgeIntensityLabel.Value = "Edge Intensity = " + (((Slider)slider).Value * maxEdgeIntensity);
                     }) {
                         Value = 1 / maxEdgeIntensity
                     },
-                    edgeIntensityLabel = new Label(margin, margin + (buttonHeight * 6), "Edge Intensity = 1.0"),
-                    detailAdjustment = new Slider(margin, margin + (buttonHeight * 7), 150, delegate(Widget slider) {
+                    edgeIntensityLabel = new Label(margin, margin + (buttonHeight * ++i), "Edge Intensity = 1.0"),
+                    detailAdjustment = new Slider(margin, margin + (buttonHeight * ++i), 150, delegate(Widget slider) {
                         detailAdjustmentLabel.Value = "Detail Adjustment = " + (((Slider)slider).Value * maxDetail);
                     }) {
                        Value = 1 / maxDetail 
                     },
-                    detailAdjustmentLabel = new Label(margin, margin + (buttonHeight * 8), "Detail Adjustment = 1.0")
+                    detailAdjustmentLabel = new Label(margin, margin + (buttonHeight * ++i), "Detail Adjustment = 1.0")
                 }
             };
         }
@@ -87,6 +93,11 @@ namespace comp4900_xtoon
         public float DetailAdjustment
         {
             get { return detailAdjustment.Value * maxDetail; }
+        }
+
+        public bool UseTextures
+        {
+            get { return useTextureButton.IsToggled; }
         }
 
         public void Update()
