@@ -26,7 +26,7 @@ namespace comp4900_xtoon
             const int margin = 10;
             const int buttonHeight = 40;
 
-            int i = 0;
+            int i = -1;
 
             gui = new Gui(game, skin, text)
             {

@@ -102,7 +102,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 		light = ToonBrightnessLevels[2];
 	}*/
 
-	float x = (input.LightAmount * 31);
+	float x = (input.LightAmount * 31)/600;
 	float y = (input.Z/(5000+DetailAdjustment));
 
 	if(x > 31) x = 31;
