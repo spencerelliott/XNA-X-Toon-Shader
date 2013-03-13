@@ -92,29 +92,20 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 		return color;
 	}
 
-    float3 light;
-
-	/*if(input.LightAmount > ToonThresholds[0]) {
-		light = ToonBrightnessLevels[0];
-	} else if(input.LightAmount > ToonThresholds[1]) {
-		light = ToonBrightnessLevels[1];
-	} else {
-		light = ToonBrightnessLevels[2];
-	}*/
+    float4 light;
 
 	float x = (input.LightAmount * 31)/600;
 	float y = (input.Z/(5000+DetailAdjustment));
 
-	if(x > 31) x = 31;
-
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 
-	light = texSample.rgb;
+	light = texSample.rgba;
 
 	if(UseTexture) {
-		color.rgb *= light;
+		color.rgb *= light.rgb;
+		color.a = light.a;
 	} else {
-		color.rgb = texSample.rgb;
+		color.rgba = texSample.rgba;
 	}
 
     return color;

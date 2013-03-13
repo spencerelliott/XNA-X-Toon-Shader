@@ -64,11 +64,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>FontTextureProcessor</Processor>
     </Compile>
-    <Compile Include="Models\Lego\lego.fbx">
-      <Name>lego</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Models\Axe\FreeAXE.fbx">
       <Name>FreeAXE</Name>
       <Importer>FbxImporter</Importer>
@@ -90,11 +85,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Radar.FBX">
-      <Name>Radar</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="ToneTextures\xtoon_shading.png">
       <Name>xtoon_shading</Name>
       <Importer>TextureImporter</Importer>
@@ -111,6 +101,27 @@
   <ItemGroup>
     <Compile Include="ToneTextures\xtoon_shading_gray.png">
       <Name>xtoon_shading_gray</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ToneTextures\xtoon_shading_alpha.png">
+      <Name>xtoon_shading_alpha</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ToneTextures\xtoon_shading_alpha_32.png">
+      <Name>xtoon_shading_alpha_32</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ToneTextures\xtoon_all_transparent.png">
+      <Name>xtoon_all_transparent</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

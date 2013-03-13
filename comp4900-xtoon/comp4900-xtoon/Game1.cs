@@ -99,14 +99,14 @@ namespace comp4900_xtoon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            theModel = Content.Load<Model>(@"Models\Axe\FreeAXE");
+            theModel = Content.Load<Model>(@"Models\dude");
 
             GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
             GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();
             GreySpriteFont = Content.Load<SpriteFont>(@"GreySkin\Texture");
 
             Tone1DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\cel_shading");
-            Tone2DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_gray");
+            Tone2DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_alpha");
 
             DebugUtils.Init(graphics.GraphicsDevice, GreySpriteFont);
 
@@ -247,7 +247,7 @@ namespace comp4900_xtoon
         private void DrawModel(Matrix world, Matrix view, Matrix projection, String effectTechniqueName, Model model)
         {
             // Set suitable RenderStates for drawing a 3D Model
-            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             Matrix[] transforms = new Matrix[model.Bones.Count];

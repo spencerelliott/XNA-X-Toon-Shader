@@ -18,7 +18,7 @@ namespace comp4900_xtoon
         private float _cameraPitch;
         private float _aspectRatio;
 
-        private const int NEAR_CLIPPING_DISTANCE = 1000;
+        private const int NEAR_CLIPPING_DISTANCE = 100;
         private const int FAR_CLIPPING_DISTANCE = 10000;
 
         public Camera(Viewport viewport)
