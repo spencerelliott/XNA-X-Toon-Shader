@@ -99,7 +99,7 @@ namespace comp4900_xtoon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            theModel = Content.Load<Model>(@"Models\dude");
+            theModel = Content.Load<Model>(@"Models\Axe\FreeAXE");
 
             GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
             GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();

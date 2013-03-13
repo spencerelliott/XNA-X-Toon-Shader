@@ -64,6 +64,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>FontTextureProcessor</Processor>
     </Compile>
+    <Compile Include="Models\Lego\lego.fbx">
+      <Name>lego</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\Axe\FreeAXE.fbx">
+      <Name>FreeAXE</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\PostProcess.fx">
@@ -80,6 +90,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Radar.FBX">
+      <Name>Radar</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="ToneTextures\xtoon_shading.png">
       <Name>xtoon_shading</Name>
       <Importer>TextureImporter</Importer>
