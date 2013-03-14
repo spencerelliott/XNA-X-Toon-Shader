@@ -25,7 +25,8 @@ namespace comp4900_xtoon
         Effect celShader;
         Effect postProcessEffect;
 
-        Model theModel;
+        LinkedList<Model> models;
+        LinkedListNode<Model> theModel;
 
         // Used for post processing effects
         RenderTarget2D sceneRenderTarget;
@@ -99,7 +100,11 @@ namespace comp4900_xtoon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            theModel = Content.Load<Model>(@"Models\dude");
+            models = new LinkedList<Model>();
+            models.AddLast(Content.Load<Model>(@"Models\dude"));
+            models.AddLast(Content.Load<Model>(@"Models\ant"));
+            models.AddLast(Content.Load<Model>(@"Models\Axe\FREEAXE"));
+            theModel = models.First;
 
             GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
             GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();
@@ -112,7 +117,9 @@ namespace comp4900_xtoon
 
             gui.Initialize(this);
 
-            ChangeEffectUsedByModel(theModel, celShader);
+            foreach (Model model in models) {
+                ChangeEffectUsedByModel(model, celShader);
+            }
         }
 
         /// <summary>
@@ -148,6 +155,7 @@ namespace comp4900_xtoon
             const int offset = 50;
             const float rotateAmount = 0.05f;
 
+            // Camera
             if (newState.IsKeyDown(Keys.W))
             {
                 cam.Position.X -= offset;
@@ -190,6 +198,16 @@ namespace comp4900_xtoon
                 cam.CameraPitch += rotateAmount;
             }
 
+            // Models
+            if (oldState.IsKeyDown(Keys.L) && newState.IsKeyUp(Keys.L))
+            {
+                theModel = theModel.Next == null ? models.First : theModel.Next;
+            }
+            if (oldState.IsKeyDown(Keys.K) && newState.IsKeyUp(Keys.K))
+            {
+                theModel = theModel.Previous == null ? models.Last : theModel.Previous;
+            }
+
             // Save state
             oldState = newState;
         }
@@ -205,12 +223,12 @@ namespace comp4900_xtoon
             // Normal Depth drawing
             graphics.GraphicsDevice.SetRenderTarget(normalRenderTarget);
             graphics.GraphicsDevice.Clear(Color.Black);
-            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "NormalDepth", theModel);
+            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "NormalDepth", theModel.Value);
 
             // Toon Effect
             graphics.GraphicsDevice.SetRenderTarget(sceneRenderTarget);
             graphics.GraphicsDevice.Clear(new Color(131, 125, 151));
-            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel);
+            DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel.Value);
 
             // Post-processing
             graphics.GraphicsDevice.SetRenderTarget(null);
