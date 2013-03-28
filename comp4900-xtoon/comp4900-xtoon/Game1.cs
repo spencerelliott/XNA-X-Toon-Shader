@@ -25,8 +25,14 @@ namespace comp4900_xtoon
         Effect celShader;
         Effect postProcessEffect;
 
+        // Models
         LinkedList<Model> models;
         LinkedListNode<Model> theModel;
+
+        // Textures
+        Texture2D Tone1DDetailTexture;
+        LinkedList<Texture2D> detailTextures;
+        LinkedListNode<Texture2D> Tone2DDetailTexture;
 
         // Used for post processing effects
         RenderTarget2D sceneRenderTarget;
@@ -41,9 +47,6 @@ namespace comp4900_xtoon
         public SpriteFont GreySpriteFont;
         public Texture2D GreyImageMap;
         public string GreyMap;
-
-        public Texture2D Tone1DDetailTexture;
-        public Texture2D Tone2DDetailTexture;
 
         public Game1()
         {
@@ -100,18 +103,25 @@ namespace comp4900_xtoon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Models
             models = new LinkedList<Model>();
             models.AddLast(Content.Load<Model>(@"Models\dude"));
             models.AddLast(Content.Load<Model>(@"Models\ant"));
             models.AddLast(Content.Load<Model>(@"Models\Axe\FREEAXE"));
             theModel = models.First;
 
+            // Detail textures
+            Tone1DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\cel_shading");
+            detailTextures = new LinkedList<Texture2D>();
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_white"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_alpha"));
+            Tone2DDetailTexture = detailTextures.First;
+
+            // Used for GUI
             GreyImageMap = Content.Load<Texture2D>(@"GreySkin\ImageMap");
             GreyMap = File.OpenText(@"Content\GreySkin\Map.txt").ReadToEnd();
             GreySpriteFont = Content.Load<SpriteFont>(@"GreySkin\Texture");
-
-            Tone1DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\cel_shading");
-            Tone2DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_alpha");
 
             DebugUtils.Init(graphics.GraphicsDevice, GreySpriteFont);
 
@@ -208,6 +218,16 @@ namespace comp4900_xtoon
                 theModel = theModel.Previous == null ? models.Last : theModel.Previous;
             }
 
+            // Detail Textures
+            if (oldState.IsKeyDown(Keys.P) && newState.IsKeyUp(Keys.P))
+            {
+                Tone2DDetailTexture = Tone2DDetailTexture.Next == null ? detailTextures.First : Tone2DDetailTexture.Next;
+            }
+            if (oldState.IsKeyDown(Keys.O) && newState.IsKeyUp(Keys.O))
+            {
+                Tone2DDetailTexture = Tone2DDetailTexture.Previous == null ? detailTextures.Last : Tone2DDetailTexture.Previous;
+            }
+
             // Save state
             oldState = newState;
         }
@@ -235,6 +255,18 @@ namespace comp4900_xtoon
             ApplyPostProcess("EdgeDetect");
 
             gui.Draw();
+
+            // Draw the current texture
+            if (gui.UseXToon)
+            {
+                const int rectSize = 100;
+                Rectangle destRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.Width - rectSize,
+                                                        graphics.GraphicsDevice.Viewport.Height - rectSize,
+                                                        rectSize, rectSize);
+                spriteBatch.Begin();
+                spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
@@ -282,7 +314,7 @@ namespace comp4900_xtoon
                     effect.Parameters["View"].SetValue(view);
                     effect.Parameters["Projection"].SetValue(projection);
                     effect.Parameters["UseToon"].SetValue(gui.UseToon);
-                    effect.Parameters["ToneTexture"].SetValue(gui.UseXToon ? Tone2DDetailTexture : Tone1DDetailTexture);
+                    effect.Parameters["ToneTexture"].SetValue(gui.UseXToon ? Tone2DDetailTexture.Value : Tone1DDetailTexture);
                     effect.Parameters["Use2D"].SetValue(gui.UseXToon);
                     effect.Parameters["UseTexture"].SetValue(gui.UseTextures);
                     effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
