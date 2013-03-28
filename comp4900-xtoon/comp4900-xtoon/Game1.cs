@@ -114,8 +114,16 @@ namespace comp4900_xtoon
             Tone1DDetailTexture = Content.Load<Texture2D>(@"ToneTextures\cel_shading");
             detailTextures = new LinkedList<Texture2D>();
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_white"));
-            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_gradient"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_gradient2"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_alpha"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_grayscale"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading2"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star2"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_skin"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_red"));
             Tone2DDetailTexture = detailTextures.First;
 
             // Used for GUI
