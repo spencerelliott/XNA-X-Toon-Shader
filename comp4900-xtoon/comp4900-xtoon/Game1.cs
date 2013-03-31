@@ -120,8 +120,13 @@ namespace comp4900_xtoon
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_grayscale"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading2"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_angle"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_angle2"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_angle3"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_shading_angle4"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star2"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star3"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_skin"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_red"));
             Tone2DDetailTexture = detailTextures.First;
