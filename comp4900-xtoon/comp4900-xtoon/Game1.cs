@@ -42,6 +42,11 @@ namespace comp4900_xtoon
 
         KeyboardState oldState;
 
+        //Lighting
+        List<Light> lights;
+
+        int degrees = 0;
+
         // GUI stuff
         GuiManager gui;
         public SpriteFont GreySpriteFont;
@@ -83,6 +88,11 @@ namespace comp4900_xtoon
             // Initialize shaders
             celShader = Content.Load<Effect>(@"Effects\Cel");
             postProcessEffect = Content.Load<Effect>(@"Effects\PostProcess");
+
+            //Add 2 new lights
+            lights = new List<Light>();
+            lights.Add(new Light(new Vector3(-100.0f, 2000.0f, 100.0f)));
+            lights.Add(new Light(new Vector3(1000.0f, 2000.0f, 100.0f)));
 
             // Initialize render targets
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
@@ -168,6 +178,19 @@ namespace comp4900_xtoon
             gui.Update();
             UpdateInput();
             cam.Update();
+
+            degrees++;
+            if (degrees == 360) degrees = 0;
+
+            lights[0].Position = new Vector3(
+                100.0f,
+                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180)*500,
+                100.0f + (float)Math.Sin((double)(degrees * Math.PI)/180)*500);
+
+            lights[1].Position = new Vector3(
+                100.0f + (float)Math.Sin((double)(degrees * Math.PI) / 180) * 500,
+                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180) * 500,
+                100.0f);
 
             base.Update(gameTime);
         }
@@ -278,6 +301,12 @@ namespace comp4900_xtoon
                                                         rectSize, rectSize);
                 spriteBatch.Begin();
                 spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
+
+                foreach (Light l in lights)
+                {
+                    l.Draw(Tone2DDetailTexture.Value, spriteBatch);
+                }
+
                 spriteBatch.End();
             }
 
@@ -331,7 +360,18 @@ namespace comp4900_xtoon
                     effect.Parameters["Use2D"].SetValue(gui.UseXToon);
                     effect.Parameters["UseTexture"].SetValue(gui.UseTextures);
                     effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
+                    effect.Parameters["UseLightDirections"].SetValue(gui.UseLightDirections);
+
+                    //Update lights
+                    int i = 0;
+                    foreach (Light l in lights)
+                    {
+                        effect.Parameters["LightPosition"].Elements[i].SetValue(l.Position);
+                        effect.Parameters["LightIntensity"].Elements[i].SetValue(l.Intensity);
+                        i++;
+                    }
                 }
+
                 mesh.Draw();
             }
         }

@@ -12,7 +12,7 @@ namespace comp4900_xtoon
     class GuiManager
     {
         Gui gui;
-        ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton;
+        ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton, useLightDirections;
         const float maxEdgeWidth = 10.0f;
         const float maxEdgeIntensity = 10.0f;
         const float maxDetail = 10000.0f;
@@ -60,7 +60,8 @@ namespace comp4900_xtoon
                     }) {
                        Value = 1 / maxDetail 
                     },
-                    detailAdjustmentLabel = new Label(margin, margin + (buttonHeight * ++i), "Detail Adjustment = 1.0")
+                    detailAdjustmentLabel = new Label(margin, margin + (buttonHeight * ++i), "Detail Adjustment = 1.0"),
+                    useLightDirections = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Light Directions")
                 }
             };
         }
@@ -98,6 +99,11 @@ namespace comp4900_xtoon
         public bool UseTextures
         {
             get { return useTextureButton.IsToggled; }
+        }
+
+        public bool UseLightDirections
+        {
+            get { return useLightDirections.IsToggled; }
         }
 
         public void Update()

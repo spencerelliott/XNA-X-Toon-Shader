@@ -1,7 +1,17 @@
+#define NUM_LIGHTS 2
+
 float4x4 World;
 float4x4 View;
 float4x4 Projection;
 float3 LightDirection = normalize(float3(1,1,1));
+
+bool UseLightDirections = false;
+
+float3 LightPosition[NUM_LIGHTS];
+float LightIntensity[NUM_LIGHTS];
+
+float LightFalloff = 2.0f;
+float LightAttenuation = 1200.0f;
 
 float ToonThresholds[2] = { 0.8, 0.4 };
 float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
@@ -56,6 +66,8 @@ struct VertexShaderOutput
 	float2 TexCoord : TEXCOORD0;
 	float LightAmount : TEXCOORD1;
 	float Z : TEXCOORD2;
+	float4 WorldPosition : TEXCOORD3;
+	float4 WorldNormal : TEXCOORD4;
 };
 
 struct NormalDepthVertexShaderOutput 
@@ -80,6 +92,8 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	output.TexCoord = input.TexCoord;
 
 	output.Z = output.Position.z;
+	output.WorldPosition = worldPosition;
+	output.WorldNormal = worldNormal;
 
     return output;
 }
@@ -92,9 +106,27 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 		return color;
 	}
 
+	float att = 0.0f;
+	float3 dir = float3(0.0f, 0.0f, 0.0f);
+	float amt = 0.0f;
+
+	//Calculate lighting
+	for(int i = 0; i < NUM_LIGHTS; i++) {
+		float d = distance(LightPosition[i], input.WorldPosition);
+		att += 1 - pow(clamp(d / LightAttenuation, 0, 1), LightFalloff);
+
+		dir += (LightPosition[i] - input.WorldPosition);
+	}
+
+	dir = normalize(dir);
+
+	if(UseLightDirections) {
+		amt = dot(input.WorldNormal, dir);
+	}
+
     float4 light;
 
-	float x = (input.LightAmount * 31)/600;
+	float x = ((UseLightDirections ? amt : input.LightAmount) * 31)/600;
 	float y = (input.Z/(5000+DetailAdjustment));
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
@@ -107,6 +139,8 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	} else {
 		color.rgba = texSample.rgba;
 	}
+
+	color.rgb *= att;
 
     return color;
 }
