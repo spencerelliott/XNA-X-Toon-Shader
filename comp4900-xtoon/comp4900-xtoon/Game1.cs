@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Ruminate.Utils;
+using PrimitivesSample;
 
 namespace comp4900_xtoon
 {
@@ -44,8 +45,8 @@ namespace comp4900_xtoon
 
         //Lighting
         List<Light> lights;
-
         int degrees = 0;
+        PrimitiveBatch primBatch;
 
         // GUI stuff
         GuiManager gui;
@@ -93,6 +94,8 @@ namespace comp4900_xtoon
             lights = new List<Light>();
             lights.Add(new Light(new Vector3(-100.0f, 2000.0f, 100.0f)));
             lights.Add(new Light(new Vector3(1000.0f, 2000.0f, 100.0f)));
+
+            primBatch = new PrimitiveBatch(graphics.GraphicsDevice);
 
             // Initialize render targets
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
@@ -283,7 +286,14 @@ namespace comp4900_xtoon
 
             // Toon Effect
             graphics.GraphicsDevice.SetRenderTarget(sceneRenderTarget);
-            graphics.GraphicsDevice.Clear(new Color(131, 125, 151));
+            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            foreach (Light l in lights)
+            {
+                //l.Draw3D(primBatch, cam.ProjectionMatrix, new Vector3(l.Position.X, l.Position.Y, 0.0f));
+                l.Draw3D(primBatch, cam.ProjectionMatrix, new Vector3(0.0f, 0.0f, 1000.0f));
+            }
+
             DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel.Value);
 
             // Post-processing
@@ -301,12 +311,6 @@ namespace comp4900_xtoon
                                                         rectSize, rectSize);
                 spriteBatch.Begin();
                 spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
-
-                foreach (Light l in lights)
-                {
-                    l.Draw(Tone2DDetailTexture.Value, spriteBatch);
-                }
-
                 spriteBatch.End();
             }
 
