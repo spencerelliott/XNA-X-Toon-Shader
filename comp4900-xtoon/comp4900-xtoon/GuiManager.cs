@@ -12,12 +12,13 @@ namespace comp4900_xtoon
     class GuiManager
     {
         Gui gui;
-        ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton, useLightDirections;
+        ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton, useLightDirections, disableLighting;
         const float maxEdgeWidth = 10.0f;
         const float maxEdgeIntensity = 10.0f;
         const float maxDetail = 10000.0f;
-        Slider edgeWidth, edgeIntensity, detailAdjustment;
-        Label edgeWidthLabel, edgeIntensityLabel, detailAdjustmentLabel;
+        const float maxAttenuation = 5000.0f;
+        Slider edgeWidth, edgeIntensity, detailAdjustment, lightAttentuation;
+        Label edgeWidthLabel, edgeIntensityLabel, detailAdjustmentLabel, lightAttenuationLabel;
 
         public void Initialize(Game1 game)
         {
@@ -61,7 +62,14 @@ namespace comp4900_xtoon
                        Value = 1 / maxDetail 
                     },
                     detailAdjustmentLabel = new Label(margin, margin + (buttonHeight * ++i), "Detail Adjustment = 1.0"),
-                    useLightDirections = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Light Directions")
+                    useLightDirections = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Light Directions"),
+                    lightAttentuation = new Slider(margin, margin + (buttonHeight * ++i), 150, delegate(Widget slider) {
+                        lightAttenuationLabel.Value = "Light attenuation = " + (((Slider)slider).Value * maxAttenuation);
+                    }) {
+                        Value = 1200 / maxAttenuation
+                    },
+                    lightAttenuationLabel = new Label(margin, margin + (buttonHeight * ++i), "Light attentuation = 1200.0"),
+                    disableLighting = new ToggleButton(margin, margin + (buttonHeight * ++i), "Disable lighting")
                 }
             };
         }
@@ -104,6 +112,16 @@ namespace comp4900_xtoon
         public bool UseLightDirections
         {
             get { return useLightDirections.IsToggled; }
+        }
+
+        public float LightAttenuation
+        {
+            get { return lightAttentuation.Value * maxAttenuation; }
+        }
+
+        public bool DisableLighting
+        {
+            get { return disableLighting.IsToggled; }
         }
 
         public void Update()

@@ -25,13 +25,13 @@ namespace comp4900_xtoon
             device.Draw(texture, dstRect, Color.Black);
         }
 
-        public void Draw3D(PrimitiveBatch primitiveBatch, Matrix projection, Vector3 where)
+        public void Draw3D(PrimitiveBatch primitiveBatch, Matrix world, Matrix projection, Matrix view, Vector3 where)
         {
             // the sun is made from 4 lines in a circle.
-            primitiveBatch.Begin(PrimitiveType.LineList, projection);
+            primitiveBatch.Begin(PrimitiveType.LineList, world, projection, view);
 
             // draw the vertical and horizontal lines
-            primitiveBatch.AddVertex(where + new Vector3(0, LIGHT_SIZE, 0), Color.Black);
+            primitiveBatch.AddVertex(where + new Vector3(0, LIGHT_SIZE, 0), Color.White);
             primitiveBatch.AddVertex(where + new Vector3(0, -LIGHT_SIZE, 0), Color.White);
 
             primitiveBatch.AddVertex(where + new Vector3(LIGHT_SIZE, 0, 0), Color.White);
