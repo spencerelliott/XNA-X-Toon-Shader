@@ -369,6 +369,7 @@ namespace comp4900_xtoon
                     effect.Parameters["UseTexture"].SetValue(gui.UseTextures);
                     effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
                     effect.Parameters["UseLightDirections"].SetValue(gui.UseLightDirections);
+                    effect.Parameters["LookAt"].SetValue(cam.LookAt);
 
                     //Update lights
                     int i = 0;

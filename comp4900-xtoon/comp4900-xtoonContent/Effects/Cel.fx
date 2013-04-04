@@ -7,6 +7,8 @@ float3 LightDirection = normalize(float3(1,1,1));
 
 bool UseLightDirections = false;
 
+float3 LookAt = float3(0,0,0);
+
 float3 LightPosition[NUM_LIGHTS];
 float LightIntensity[NUM_LIGHTS];
 
@@ -126,8 +128,12 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 light;
 
+	float angleBetween = acos(dot(-LookAt, input.WorldNormal)/(length(LookAt)*length(input.WorldNormal)));
 	float x = ((UseLightDirections ? amt : input.LightAmount) * 31)/600;
-	float y = (input.Z/(5000+DetailAdjustment));
+	//float y = (input.Z/(5000+DetailAdjustment));
+	float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
+	//float y = 0.0;
+	//return float4(input.WorldNormal.xyz, 0);
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 
