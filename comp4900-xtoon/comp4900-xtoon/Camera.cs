@@ -6,7 +6,7 @@ namespace comp4900_xtoon
     class Camera
     {
         public Vector3 Position;
-        private Vector3 _lookAt;
+        public Vector3 LookAt;
         private Vector3 _upVector;
 
         private Matrix _rotationMatrix;
@@ -27,7 +27,7 @@ namespace comp4900_xtoon
             _projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _aspectRatio, 
                                                                     NEAR_CLIPPING_DISTANCE, FAR_CLIPPING_DISTANCE);
             Position = new Vector3(3000, 3000, 0);
-            _lookAt = new Vector3(0, 1500, 0);
+            LookAt = new Vector3(0, 1500, 0);
             _upVector = Vector3.Up;
 
             _cameraYaw = 1.0f;
@@ -53,11 +53,6 @@ namespace comp4900_xtoon
             set { _cameraPitch = value; }
         }
 
-        public Vector3 LookAt
-        {
-            get { return _lookAt; }
-        }
-
         public Matrix RotationMatrix
         {
             get { return _rotationMatrix; }
@@ -76,7 +71,7 @@ namespace comp4900_xtoon
         public void Update()
         {
             _rotationMatrix = Matrix.CreateRotationY(_cameraYaw) * Matrix.CreateRotationX(_cameraRoll) * Matrix.CreateRotationZ(_cameraPitch);
-            _viewMatrix = Matrix.CreateLookAt(Position, _lookAt, _upVector);
+            _viewMatrix = Matrix.CreateLookAt(Position, LookAt, _upVector);
         }
     }
 }
