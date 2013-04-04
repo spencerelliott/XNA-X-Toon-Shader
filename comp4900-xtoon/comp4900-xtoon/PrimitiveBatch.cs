@@ -112,9 +112,11 @@ namespace PrimitivesSample
 
         // Begin is called to tell the PrimitiveBatch what kind of primitives will be
         // drawn, and to prepare the graphics card to render those primitives.
-        public void Begin(PrimitiveType primitiveType, Matrix projection)
+        public void Begin(PrimitiveType primitiveType, Matrix world, Matrix projection, Matrix view)
         {
             basicEffect.Projection = projection;
+            basicEffect.World = world;
+            basicEffect.View = view;
 
             if (hasBegun)
             {

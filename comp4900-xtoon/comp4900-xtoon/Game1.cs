@@ -48,6 +48,9 @@ namespace comp4900_xtoon
         int degrees = 0;
         PrimitiveBatch primBatch;
 
+        bool hideGui = false;
+        bool lastKeyUp = false;
+
         // GUI stuff
         GuiManager gui;
         public SpriteFont GreySpriteFont;
@@ -178,7 +181,7 @@ namespace comp4900_xtoon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            gui.Update();
+            if(!hideGui) gui.Update();
             UpdateInput();
             cam.Update();
 
@@ -187,12 +190,12 @@ namespace comp4900_xtoon
 
             lights[0].Position = new Vector3(
                 100.0f,
-                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180)*500,
-                100.0f + (float)Math.Sin((double)(degrees * Math.PI)/180)*500);
+                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180)*1000,
+                100.0f + (float)Math.Sin((double)(degrees * Math.PI)/180)*800);
 
             lights[1].Position = new Vector3(
-                100.0f + (float)Math.Sin((double)(degrees * Math.PI) / 180) * 500,
-                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180) * 500,
+                100.0f + (float)Math.Sin((double)((degrees + 90) * Math.PI) / 180) * 1000,
+                2000.0f + (float)Math.Cos((double)((degrees + 90) * Math.PI) / 180) * 1000,
                 100.0f);
 
             base.Update(gameTime);
@@ -251,6 +254,12 @@ namespace comp4900_xtoon
                 cam.CameraPitch += rotateAmount;
             }
 
+            //Gui hiding
+            if (oldState.IsKeyDown(Keys.H) && newState.IsKeyUp(Keys.H))
+            {
+                hideGui = !hideGui;
+            }
+
             // Models
             if (oldState.IsKeyDown(Keys.L) && newState.IsKeyUp(Keys.L))
             {
@@ -292,10 +301,13 @@ namespace comp4900_xtoon
             graphics.GraphicsDevice.SetRenderTarget(sceneRenderTarget);
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            foreach (Light l in lights)
+            if (!gui.DisableLighting)
             {
-                //l.Draw3D(primBatch, cam.ProjectionMatrix, new Vector3(l.Position.X, l.Position.Y, 0.0f));
-                l.Draw3D(primBatch, cam.ProjectionMatrix, new Vector3(0.0f, 0.0f, 1000.0f));
+                foreach (Light l in lights)
+                {
+                    l.Draw3D(primBatch, cam.RotationMatrix, cam.ProjectionMatrix, cam.ViewMatrix, l.Position);
+                    //l.Draw3D(primBatch, cam.ProjectionMatrix, new Vector3(0.0f, 0.0f, 1000.0f));
+                }
             }
 
             DrawModel(cam.RotationMatrix, cam.ViewMatrix, cam.ProjectionMatrix, "ToonShader", theModel.Value);
@@ -304,7 +316,7 @@ namespace comp4900_xtoon
             graphics.GraphicsDevice.SetRenderTarget(null);
             ApplyPostProcess("EdgeDetect");
 
-            gui.Draw();
+            if (!hideGui) gui.Draw();
 
             // Draw the current texture
             if (gui.UseXToon)
@@ -314,7 +326,7 @@ namespace comp4900_xtoon
                                                         graphics.GraphicsDevice.Viewport.Height - rectSize,
                                                         rectSize, rectSize);
                 spriteBatch.Begin();
-                spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
+                if (!hideGui) spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
                 spriteBatch.End();
             }
 
@@ -370,6 +382,8 @@ namespace comp4900_xtoon
                     effect.Parameters["DetailAdjustment"].SetValue(gui.DetailAdjustment);
                     effect.Parameters["UseLightDirections"].SetValue(gui.UseLightDirections);
                     effect.Parameters["LookAt"].SetValue(cam.LookAt);
+                    effect.Parameters["LightAttenuation"].SetValue(gui.LightAttenuation);
+                    effect.Parameters["DisableLighting"].SetValue(gui.DisableLighting);
 
                     //Update lights
                     int i = 0;

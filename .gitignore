@@ -113,3 +113,7 @@ paper/*.blg
 paper/*.dvi
 paper/*.pdf
 paper/*.synctex.gz
+
+#XNA Poop
+
+*.Debug.cachefile

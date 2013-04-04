@@ -15,6 +15,8 @@ float LightIntensity[NUM_LIGHTS];
 float LightFalloff = 2.0f;
 float LightAttenuation = 1200.0f;
 
+bool DisableLighting = false;
+
 float ToonThresholds[2] = { 0.8, 0.4 };
 float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
 
@@ -126,6 +128,8 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 		amt = dot(input.WorldNormal, dir);
 	}
 
+	if(DisableLighting) att = 1.0f;
+
     float4 light;
 
 	float angleBetween = acos(dot(-LookAt, input.WorldNormal)/(length(LookAt)*length(input.WorldNormal)));
@@ -134,6 +138,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
 	//float y = 0.0;
 	//return float4(input.WorldNormal.xyz, 0);
+	float y = (input.Z/(5000+DetailAdjustment));
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 
