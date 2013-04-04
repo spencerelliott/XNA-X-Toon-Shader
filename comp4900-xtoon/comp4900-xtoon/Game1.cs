@@ -208,10 +208,12 @@ namespace comp4900_xtoon
             if (newState.IsKeyDown(Keys.W))
             {
                 cam.Position.X -= offset;
+                cam.LookAt.X -= offset;
             }
             if (newState.IsKeyDown(Keys.S))
             {
                 cam.Position.X += offset;
+                cam.LookAt.X += offset;
             }
             if (newState.IsKeyDown(Keys.A))
             {
@@ -225,10 +227,12 @@ namespace comp4900_xtoon
             if (newState.IsKeyDown(Keys.Down))
             {
                 cam.Position.Y -= offset;
+                cam.LookAt.Y -= offset;
             }
             if (newState.IsKeyDown(Keys.Up))
             {
                 cam.Position.Y += offset;
+                cam.LookAt.Y += offset;
             }
             if (newState.IsKeyDown(Keys.Left))
             {
