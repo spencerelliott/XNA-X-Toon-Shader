@@ -117,7 +117,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	//Calculate lighting
 	for(int i = 0; i < NUM_LIGHTS; i++) {
 		float d = distance(LightPosition[i], input.WorldPosition);
-		att += 1 - pow(clamp(d / LightAttenuation, 0, 1), LightFalloff);
+		att += 1 - pow(clamp(d / LightIntensity[i], 0, 1), LightFalloff);
 
 		dir += (LightPosition[i] - input.WorldPosition);
 	}
@@ -135,7 +135,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float angleBetween = acos(dot(-LookAt, input.WorldNormal)/(length(LookAt)*length(input.WorldNormal)));
 	float x = ((UseLightDirections ? amt : input.LightAmount) * 31)/600;
 	//float y = (input.Z/(5000+DetailAdjustment));
-	float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
+	//float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
 	//float y = 0.0;
 	//return float4(input.WorldNormal.xyz, 0);
 	float y = (input.Z/(5000+DetailAdjustment));

@@ -48,8 +48,13 @@ namespace comp4900_xtoon
         int degrees = 0;
         PrimitiveBatch primBatch;
 
+        int modelId = 0;
+        List<Vector3> lightPos = new List<Vector3>();
+        List<float> lightIntensity = new List<float>();
+        List<float> radiusSize = new List<float>();
+
         bool hideGui = false;
-        bool lastKeyUp = false;
+        bool showDetail = false;
 
         // GUI stuff
         GuiManager gui;
@@ -95,8 +100,21 @@ namespace comp4900_xtoon
 
             //Add 2 new lights
             lights = new List<Light>();
-            lights.Add(new Light(new Vector3(-100.0f, 2000.0f, 100.0f)));
-            lights.Add(new Light(new Vector3(1000.0f, 2000.0f, 100.0f)));
+            lights.Add(new Light());
+            lights.Add(new Light());
+
+            lightPos.Add(new Vector3(100.0f, 2000.0f, 100.0f));
+            lightIntensity.Add(1200.0f);
+            radiusSize.Add(1000.0f);
+
+            lightPos.Add(new Vector3(2000.0f, 2000.0f, -2000.0f));
+            lightIntensity.Add(1500.0f);
+            radiusSize.Add(1500.0f);
+
+            lightPos.Add(new Vector3(100.0f, 1000.0f, 100.0f));
+            lightIntensity.Add(800.0f);
+            radiusSize.Add(1000.0f);
+
 
             primBatch = new PrimitiveBatch(graphics.GraphicsDevice);
 
@@ -189,14 +207,17 @@ namespace comp4900_xtoon
             if (degrees == 360) degrees = 0;
 
             lights[0].Position = new Vector3(
-                100.0f,
-                2000.0f + (float)Math.Cos((double)(degrees * Math.PI) / 180)*1000,
-                100.0f + (float)Math.Sin((double)(degrees * Math.PI)/180)*800);
+                lightPos[modelId].X,
+                lightPos[modelId].Y + (float)Math.Cos((double)(degrees * Math.PI) / 180) * radiusSize[modelId],
+                lightPos[modelId].Z + (float)Math.Sin((double)(degrees * Math.PI) / 180) * radiusSize[modelId]);
 
             lights[1].Position = new Vector3(
-                100.0f + (float)Math.Sin((double)((degrees + 90) * Math.PI) / 180) * 1000,
-                2000.0f + (float)Math.Cos((double)((degrees + 90) * Math.PI) / 180) * 1000,
-                100.0f);
+                lightPos[modelId].X + (float)Math.Sin((double)((degrees + 90) * Math.PI) / 180) * radiusSize[modelId],
+                lightPos[modelId].Y + (float)Math.Cos((double)((degrees + 90) * Math.PI) / 180) * radiusSize[modelId],
+                lightPos[modelId].Z);
+
+            lights[0].Intensity = lightIntensity[modelId];
+            lights[1].Intensity = lightIntensity[modelId];
 
             base.Update(gameTime);
         }
@@ -260,13 +281,20 @@ namespace comp4900_xtoon
                 hideGui = !hideGui;
             }
 
+            if (oldState.IsKeyDown(Keys.J) && newState.IsKeyUp(Keys.J))
+            {
+                showDetail = !showDetail;
+            }
+
             // Models
             if (oldState.IsKeyDown(Keys.L) && newState.IsKeyUp(Keys.L))
             {
+                modelId = theModel.Next == null ? 0 : ++modelId;
                 theModel = theModel.Next == null ? models.First : theModel.Next;
             }
             if (oldState.IsKeyDown(Keys.K) && newState.IsKeyUp(Keys.K))
             {
+                modelId = theModel.Previous == null ? models.Count-1 : --modelId;
                 theModel = theModel.Previous == null ? models.Last : theModel.Previous;
             }
 
@@ -326,7 +354,7 @@ namespace comp4900_xtoon
                                                         graphics.GraphicsDevice.Viewport.Height - rectSize,
                                                         rectSize, rectSize);
                 spriteBatch.Begin();
-                if (!hideGui) spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
+                if (!hideGui || showDetail) spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
                 spriteBatch.End();
             }
 
