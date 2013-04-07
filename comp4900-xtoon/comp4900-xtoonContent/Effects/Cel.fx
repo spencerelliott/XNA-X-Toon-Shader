@@ -12,6 +12,9 @@ float3 LookAt = float3(0,0,0);
 float3 LightPosition[NUM_LIGHTS];
 float LightIntensity[NUM_LIGHTS];
 
+float zmax = 5000.0f;
+float zmin = 1000.0f;
+
 float LightFalloff = 2.0f;
 float LightAttenuation = 1200.0f;
 
@@ -137,7 +140,8 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float y;
 
 	if (UseDistance) {
-		y = (input.Z/(5000+DetailAdjustment));
+		y = log(input.Z/zmin)/log(zmax/zmin);
+		//y = (input.Z/(5000+DetailAdjustment));
 	}
 	else {
 		// Calculate the angle between the look at vector and the surface normal	
