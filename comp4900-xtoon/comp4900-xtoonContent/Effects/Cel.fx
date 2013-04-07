@@ -138,7 +138,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
 	//float y = 0.0;
 	//return float4(input.WorldNormal.xyz, 0);
-	float y = (input.Z/(5000+DetailAdjustment));
+	//float y = (input.Z/(5000+DetailAdjustment));
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 

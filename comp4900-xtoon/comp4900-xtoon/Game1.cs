@@ -145,6 +145,7 @@ namespace comp4900_xtoon
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_star3"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_skin"));
             detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\xtoon_red"));
+            detailTextures.AddLast(Content.Load<Texture2D>(@"ToneTextures\noisy"));
             Tone2DDetailTexture = detailTextures.First;
 
             // Used for GUI
