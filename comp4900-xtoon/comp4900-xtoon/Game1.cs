@@ -404,6 +404,7 @@ namespace comp4900_xtoon
                     effect.Parameters["View"].SetValue(view);
                     effect.Parameters["Projection"].SetValue(projection);
                     effect.Parameters["UseToon"].SetValue(gui.UseToon);
+                    effect.Parameters["UseDistance"].SetValue(gui.UseDistance);
                     effect.Parameters["ToneTexture"].SetValue(gui.UseXToon ? Tone2DDetailTexture.Value : Tone1DDetailTexture);
                     effect.Parameters["Use2D"].SetValue(gui.UseXToon);
                     effect.Parameters["UseTexture"].SetValue(gui.UseTextures);
