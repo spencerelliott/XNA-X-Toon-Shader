@@ -22,6 +22,7 @@ float ToonBrightnessLevels[3] = { 1.3, 0.9, 0.5 };
 
 texture ToneTexture;
 bool Use2D = false;
+bool UseDistance = true;
 bool UseTexture = true;
 float DetailAdjustment = 1.0f;
 
@@ -117,7 +118,7 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	//Calculate lighting
 	for(int i = 0; i < NUM_LIGHTS; i++) {
 		float d = distance(LightPosition[i], input.WorldPosition);
-		att += 1 - pow(clamp(d / LightAttenuation, 0, 1), LightFalloff);
+		att += 1 - pow(clamp(d / LightIntensity[i], 0, 1), LightFalloff);
 
 		dir += (LightPosition[i] - input.WorldPosition);
 	}
@@ -132,13 +133,20 @@ float4 ToonPixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 light;
 
-	float angleBetween = acos(dot(-LookAt, input.WorldNormal)/(length(LookAt)*length(input.WorldNormal)));
 	float x = ((UseLightDirections ? amt : input.LightAmount) * 31)/600;
-	//float y = (input.Z/(5000+DetailAdjustment));
-	float y = 1.0 - abs(180.0 - angleBetween) / 180.0;
-	//float y = 0.0;
-	//return float4(input.WorldNormal.xyz, 0);
-	//float y = (input.Z/(5000+DetailAdjustment));
+	float y;
+
+	if (UseDistance) {
+		y = (input.Z/(5000+DetailAdjustment));
+	}
+	else {
+		// Calculate the angle between the look at vector and the surface normal	
+		float angleBetween = acos(dot(-LookAt, input.WorldNormal)/(length(LookAt)*length(input.WorldNormal)));
+		float maxAngle = radians(180.0);
+
+		// The closer the angles are, the more detail should be used
+		y = 1.0 - abs(maxAngle - angleBetween) / maxAngle;
+	} 
 
 	float4 texSample = tex2D(ToonSampler, float2(x, Use2D ? y : 0));
 

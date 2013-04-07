@@ -13,6 +13,7 @@ namespace comp4900_xtoon
     {
         Gui gui;
         ToggleButton useToonButton, drawOutlineButton, useXToon, useTextureButton, useLightDirections, disableLighting;
+        ComboBox secondDimension;
         const float maxEdgeWidth = 10.0f;
         const float maxEdgeIntensity = 10.0f;
         const float maxDetail = 10000.0f;
@@ -41,6 +42,11 @@ namespace comp4900_xtoon
                     useXToon = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use X-Toon") {
                         IsToggled = false
                     },
+                    secondDimension = new ComboBox(margin + 100, margin + (buttonHeight * i), 150, "Second Dimension", CardinalDirection.South,
+                        new List<ComboBox.DropDownItem>() {
+                            new ComboBox.DropDownItem("Distance"),
+                            new ComboBox.DropDownItem("Angle")
+                        }),
                     useTextureButton = new ToggleButton(margin, margin + (buttonHeight * ++i), "Use Textures") {
                         IsToggled = true
                     },
@@ -97,6 +103,19 @@ namespace comp4900_xtoon
         public bool UseXToon
         {
             get { return useXToon.IsToggled; }
+        }
+
+        /**
+         * Returns true if "Angle" isn't selected as the second dimension
+         * else false
+         */
+        public bool UseDistance
+        {
+            get
+            {
+                return secondDimension.Label == "Second Dimension" ||
+                       secondDimension.Label == "Distance";
+            }
         }
 
         public float DetailAdjustment
