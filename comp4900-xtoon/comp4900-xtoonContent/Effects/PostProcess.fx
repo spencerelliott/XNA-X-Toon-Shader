@@ -3,8 +3,8 @@ float EdgeIntensity = 1.0;
 float NormalSensitivity = 1.0;
 float DepthSensitivity = 10.0;
 
-float NormalThreshold = 0.5;
-float DepthThreshold = 1.0;
+float NormalThreshold = 2.3;
+float DepthThreshold = 0.1;
 
 float2 ScreenResolution;
 

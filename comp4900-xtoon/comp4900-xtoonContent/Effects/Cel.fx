@@ -3,7 +3,7 @@
 float4x4 World;
 float4x4 View;
 float4x4 Projection;
-float3 LightDirection = normalize(float3(1,1,1));
+float3 LightDirection = normalize(float3(0,1,1));
 
 bool UseLightDirections = false;
 
