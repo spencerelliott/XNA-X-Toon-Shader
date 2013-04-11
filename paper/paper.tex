@@ -1,6 +1,7 @@
 \documentclass[annual]{acmsiggraph}
 \usepackage{wrapfig}
-\title{X\textsuperscript{2}-Toon: An Extended X-Toon Shader}
+\usepackage{hyperref}
+\title{X\texorpdfstring{\textsuperscript{2}}-Toon: An Extended X-Toon Shader}
 
 \author{Robert Wolfe\thanks{e-mail:robert\_wolfe@carleton.ca}\\Spencer Elliott\thanks{e-mail:spencer\_elliott@carleton.ca}}
 \pdfauthor{Robert Wolfe, Spencer Elliott}
@@ -22,12 +23,21 @@ X-toon ~\cite{BTM06a} extended classic cel shading.
 \copyrightspace
 
 \section{Introduction}
+~\cite{BTM06a} extended the classical understanding of how to perform toon shading. A new dimension of tone detail can be used to create a desired level of abstraction. Our approach implements this technique, as well as extends it. We first developed a standard cel shader using ~\cite{CelShadingTut} as a starting point. Using models downloaded from ~\cite{TurboSquid} and (*\textbf{where did we download the dude and axes??}), we used a threshold of the dot product of the lighting vector and the surface normal to produce classic toon shading. An example can be seen in Figure~\ref{fig:toonshade}.
 
-We first developed a standard cel shader using ~\cite{CelShadingTut} as a basic example.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.5in]{images/classic_cel2}
+	\caption{Classic Toon Shading}
+	\label{fig:toonshade}
+\end{figure}
 
-We used the GUI framework for XNA from ~\cite{Ruminate}.
+A brief explanation of X-Toon is described in Section~\ref{sec:tonedetail}, our extensions in Section~\ref{sec:extensions}, and the results in Section~\ref{sec:results}. Discussion and future work are described in Section~\ref{sec:discussion} and finally the conclusion in Section~\ref{sec:conclusion}.
+
+To make our program more interactive, we developed a GUI using the XNA GUI framework from ~\cite{Ruminate}. The controls allows the user to modify the parameters and enabled/disable features.
 
 \section{Tone Detail}
+\label{sec:tonedetail}
 \begin{wrapfigure}{r}{0.1\textwidth}
   \vspace{-20pt}
   \begin{center}
@@ -55,6 +65,7 @@ a = \cos^{-1}{(-LookAt \cdot Normal / |LookAt||Normal|)}
 \end{equation}
 
 \section{Extensions to original X-Toon shader}
+\label{sec:extensions}
 We have extended the original shader offered in the X-Toon paper to increase the usability for various new effects. The first extension involves using colours from the original model's textures when calculating the final detail. The second extension allows for the use of transparency in both the tone texture and original model's textures to create 
 
 \subsection{Texture blending}
@@ -78,6 +89,7 @@ We have added the ability to blend textures from a model into the calculation of
 \end{figure}
 
 \section{Results}
+\label{sec:results}
 
 \begin{figure}[ht]
   \centering
@@ -87,11 +99,13 @@ We have added the ability to blend textures from a model into the calculation of
 
 
 \section{Discussion and Future Work}
+\label{sec:discussion}
 
 \subsection{Alpha blending correction}
 
 
 \section{Conclusion}
+\label{sec:conclusion}
 
 
 \bibliographystyle{acmsiggraph}
