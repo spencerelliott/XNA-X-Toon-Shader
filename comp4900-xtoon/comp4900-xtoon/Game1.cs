@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Ruminate.Utils;
 using PrimitivesSample;
+using System.Diagnostics;
 
 namespace comp4900_xtoon
 {
@@ -62,10 +63,23 @@ namespace comp4900_xtoon
         public Texture2D GreyImageMap;
         public string GreyMap;
 
+        Stopwatch stopWatch;
+        float maxFPS = 0.0f;
+        float avgFPS = 0.0f;
+        float lastFPS;
+        float[] fpsList = new float[100];
+        int index = 0;
+        SpriteFont font;
+
+        bool lastUseXToon = false;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            this.IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
 
             /* In case we allow user to resize window
             Window.ClientSizeChanged += delegate
@@ -87,6 +101,9 @@ namespace comp4900_xtoon
             graphics.PreferredBackBufferHeight = 600;
             graphics.ApplyChanges();
             IsMouseVisible = true;
+
+            stopWatch = new Stopwatch();
+            stopWatch.Start();
 
             cam = new Camera(graphics.GraphicsDevice.Viewport);
 
@@ -136,6 +153,8 @@ namespace comp4900_xtoon
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            font = Content.Load<SpriteFont>(@"timer");
 
             // Models
             models = new LinkedList<Model>();
@@ -196,6 +215,20 @@ namespace comp4900_xtoon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (lastUseXToon != gui.UseXToon)
+            {
+                lastUseXToon = gui.UseXToon;
+
+                fpsList = new float[100];
+                index = 0;
+                lastFPS = 0;
+                avgFPS = 0;
+                maxFPS = 0;
+            }
+
+            avgFPS = CalcAvgFPS(lastFPS);
+            if (lastFPS > maxFPS && !float.IsInfinity(lastFPS)) maxFPS = lastFPS;
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -313,6 +346,22 @@ namespace comp4900_xtoon
             oldState = newState;
         }
 
+        public float CalcAvgFPS(float newFPS)
+        {
+            fpsList[index] = newFPS;
+            index++;
+
+            if (index >= 100) index = 0;
+
+            float sum = 0.0f;
+            foreach (float f in fpsList)
+            {
+                sum += f;
+            }
+
+            return sum / 100;
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -320,6 +369,9 @@ namespace comp4900_xtoon
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
+
+            stopWatch.Reset();
+            stopWatch.Start();
 
             // Normal Depth drawing
             graphics.GraphicsDevice.SetRenderTarget(normalRenderTarget);
@@ -348,16 +400,22 @@ namespace comp4900_xtoon
             if (!hideGui) gui.Draw();
 
             // Draw the current texture
+            const int rectSize = 100;
+            Rectangle destRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.Width - rectSize,
+                                                    graphics.GraphicsDevice.Viewport.Height - rectSize,
+                                                    rectSize, rectSize);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, (int)avgFPS + " frames/sec", new Vector2(10.0f, 555.0f), Color.White);
+            spriteBatch.DrawString(font, (int)maxFPS + " frames/sec (max)", new Vector2(10.0f, 570.0f), Color.White);
+
+            lastFPS = (1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
+
             if (gui.UseXToon)
             {
-                const int rectSize = 100;
-                Rectangle destRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.Width - rectSize,
-                                                        graphics.GraphicsDevice.Viewport.Height - rectSize,
-                                                        rectSize, rectSize);
-                spriteBatch.Begin();
                 if (!hideGui || showDetail) spriteBatch.Draw(Tone2DDetailTexture.Value, destRectangle, Color.White);
-                spriteBatch.End();
             }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
