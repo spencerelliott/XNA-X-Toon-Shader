@@ -20,6 +20,8 @@ namespace comp4900_xtoon
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        const int MAX_SAMPLES = 500;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -66,8 +68,9 @@ namespace comp4900_xtoon
         Stopwatch stopWatch;
         float maxFPS = 0.0f;
         float avgFPS = 0.0f;
+        long curSum = 0;
         float lastFPS;
-        float[] fpsList = new float[100];
+        float[] fpsList = new float[MAX_SAMPLES];
         int index = 0;
         SpriteFont font;
 
@@ -78,8 +81,13 @@ namespace comp4900_xtoon
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            this.IsFixedTimeStep = false;
-            graphics.SynchronizeWithVerticalRetrace = false;
+            //this.IsFixedTimeStep = false;
+            //graphics.SynchronizeWithVerticalRetrace = false;
+
+            //graphics.PreferredBackBufferWidth = 1680;
+            //graphics.PreferredBackBufferHeight = 1050;
+            //graphics.PreferMultiSampling = false;
+            //graphics.IsFullScreen = true;
 
             /* In case we allow user to resize window
             Window.ClientSizeChanged += delegate
@@ -219,11 +227,12 @@ namespace comp4900_xtoon
             {
                 lastUseXToon = gui.UseXToon;
 
-                fpsList = new float[100];
+                fpsList = new float[MAX_SAMPLES];
                 index = 0;
                 lastFPS = 0;
                 avgFPS = 0;
                 maxFPS = 0;
+                curSum = 0;
             }
 
             avgFPS = CalcAvgFPS(lastFPS);
@@ -348,18 +357,18 @@ namespace comp4900_xtoon
 
         public float CalcAvgFPS(float newFPS)
         {
+            curSum -= (long)fpsList[index];
             fpsList[index] = newFPS;
             index++;
 
-            if (index >= 100) index = 0;
-
-            float sum = 0.0f;
-            foreach (float f in fpsList)
+            if (index >= MAX_SAMPLES)
             {
-                sum += f;
+                index = 0;
             }
+            
+            curSum += (long)newFPS;
 
-            return sum / 100;
+            return (float)(curSum / MAX_SAMPLES);
         }
 
         /// <summary>

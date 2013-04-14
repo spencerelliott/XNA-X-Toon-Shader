@@ -14,7 +14,7 @@
 
 \begin{abstract}
 
-X-toon ~\cite{BTM06a} extended classic cel shading.
+The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading texture to 2D texture. The second dimension "corresponds to the desired 'tone detail'". In this paper, we look to extend the initial offering of the X-Toon shader and develop new methods for calculating shading values and tone detail. Additionally, we extend the original shader to allow the use of model textures and transparency within a tone detail texture. This gives artists the tools to create new effects that were not possible with original X-Toon shader.
 
 \end{abstract}
 
@@ -23,7 +23,7 @@ X-toon ~\cite{BTM06a} extended classic cel shading.
 \copyrightspace
 
 \section{Introduction}
-~\cite{BTM06a} extended the classical understanding of how to perform toon shading. A new dimension of tone detail can be used to create a desired level of abstraction. Our approach implements this technique, as well as extends it. We first developed a standard cel shader using ~\cite{CelShadingTut} as a starting point. Using models downloaded from ~\cite{TurboSquid} and (*\textbf{where did we download the dude and axes??}), we used a threshold of the dot product of the lighting vector and the surface normal to produce classic toon shading. An example can be seen in Figure~\ref{fig:toonshade}.
+~\cite{BTM06a} extended the classical understanding of how to perform toon shading. A new dimension of tone detail can be used to create a desired level of abstraction. Our approach implements this technique, as well as extends it. We first developed a standard cel shader using ~\cite{CelShadingTut} as a starting point. Using models downloaded from ~\cite{TurboSquid}, we used a threshold of the dot product of the lighting vector and the surface normal to produce classic toon shading. An example can be seen in Figure~\ref{fig:toonshade}.
 
 \begin{figure}[h]
 	\centering
@@ -47,13 +47,14 @@ To make our program more interactive, we developed a GUI using the XNA GUI frame
   \vspace{-10pt}
   \label{fig:2dtexture}
 \end{wrapfigure}
-We extend the concept of a regular toon shader by adding a second dimension to the texture. The x-axis remains as $N\cdot L$, where {\it{N}} is the surface normal and {\it{L}} is the light direction. The y-axis represents the level of detail. The higher up on the axis, the less detail is used. Conversely, the lower the y-axis value, the more detail. An example of a 2D texture used in this application can be seen in Figure~\ref{fig:2dtexture} (note the y-axis increases downward).
+X-Toon extends the regular toon shader by adding a second dimension to the texture. The x-axis remains as $N\cdot L$, where {\it{N}} is the surface normal and {\it{L}} is the light direction. The y-axis represents the level of detail. The higher up on the axis, the less detail is used. Conversely, the lower the y-axis value, the more detail. An example of a 2D texture used in this application can be seen in Figure~\ref{fig:2dtexture} (note the y-axis increases downward).
 
 The method of computing the y-axis depends on an {\it{attribute map.}} The chosen attribute changes the level of detail, depending on its value. The original paper provided two possible attribute maps: distance and orientation. This paper deals exclusively with the distance attribute mapping. We provide an alternative mapping involving the angle between the camera {\it{look at}} vector and surface normal. 
 
 In addition to providing an alternate attribute mapping, we also developed a new method for determining the amount of shading on a model. This method involves calculating direction vectors to each light from each vertex. The resulting vector can then be used to calculate the final shading amount.
 
 \subsection{Distance}
+\label{sec:distance}
 As in the original X-Toon paper, one attribute map uses the focal distance of the vertex to the camera. The larger this distance, the less detail will be used, abstracting the model. The smaller this distance, the more detail used. Nothing was changed from the original paper. An example result can be seen in Figure~\ref{fig:distanceResult}, using a transparent texture map (see Section~\ref{sec:transparency}).
 
 \begin{figure}[h]
@@ -64,6 +65,7 @@ As in the original X-Toon paper, one attribute map uses the focal distance of th
 \end{figure}
 
 \subsection{Angle}
+\label{sec:angle}
 We introduce a new attribute map based on the angles of the {\it{look at}} of the camera and the surface normal. The look at vector is the direction that the camera is pointed. The angle between the two vectors is calculated using Equation~\ref{eqn:angle}, which is derived from the formula for dot product.
 
 \begin{equation}
@@ -88,6 +90,7 @@ The negative of the look at vector is used because it is pointed towards the sur
 \end{figure}
 
 \subsection{Light Direction}
+\label{sec:light_dir}
 We have developed a new method to determine the shading value on a model based on the lighting of a scene. Equation~\ref{eqn:light_dir} is used for determining the final vector. First, the direction from each light in {\it{Li}} to the vertex position, {\it{P}}, is calculated. These directions are then summed and a resulting direction vector is created. This direction is then normalized and the final detail vector, {\it{D}}, is determined. The same equation for determining the original shading value, $N\cdot L$, is used to determing the final shading value of the vertex. For the purpose of this method, {\it{N}} is represented by the final normalized direction vector, {\it{D}}. 
 
 \begin{equation}
@@ -144,7 +147,7 @@ The original X-Toon shader only supports the use of an opaque tone detail textur
 
 \section{Results}
 \label{sec:results}
-Some results are ablkjalskdjalskdjasd.
+Using the new methods outlined in Sections~\ref{sec:angle}, ~\ref{sec:light_dir}, ~\ref{sec:blending}, and ~\ref{sec:transparency}, we were able to develop new effects not possible with the original X-Toon shader. Figures~\ref{fig:hologram}, ~\ref{fig:stippleHatch1}, and ~\ref{fig:stippleHatch2} use the same tone detail texture but result in different effects. This is achieved by mixing our techniques such as using the lighting directions outlined in ~\ref{sec:light_dir} to create a hologram effect in Figure~\ref{fig:hologram}. Figure~\ref{fig:lightingResult} simulates self-shadowing. We use the textures from the original models and blend them with the tone detail texture found in Figure~\ref{fig:gradient}. This uses our texture blending technique described in Section~\ref{sec:blending}. Additionally, we were also able to have the self-shadowing effect interact with the lighting of the scene using the lighting directions as previously discussed.
 
 \begin{figure}[h]
 	\centering
@@ -169,6 +172,13 @@ Some results are ablkjalskdjalskdjasd.
 
 \begin{figure}[h]
 	\centering
+	\includegraphics[width=4in]{images/xtoon_shading_gradient}
+	\caption{Tone texture for lighting}
+	\label{fig:gradient}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
 	\includegraphics[width=4in]{images/stipple-hatch-result1}
 	\caption{Stipple/hatching result}
 	\label{fig:stippleHatch1}
@@ -184,38 +194,48 @@ Some results are ablkjalskdjalskdjasd.
 \begin{figure}[h]
   \centering
   \includegraphics[width=4in]{images/test}
-  \caption{Sample illustration.}
+  \caption{Sample illustration}
+\end{figure}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=4in]{images/alpha_issues}
+ \caption{Issues with alpha blending. The vertices on the front of the model can still be seen.}
+ \label{fig:alpha_issue}
 \end{figure}
 
 
 \section{Discussion and Future Work}
 \label{sec:discussion}
-We have presented multiple extensions to the original X-Toon shader developed by  ~\cite{BTM06a}.  In order to retain the speed of the X-Toon shader, we attempted to minimize the complexity of the code executed in the shaders. The code added for transparency and texture blending as well as our new calculations for tone detail resulted in minimal performance reductions. To investigate the performance of our code, we used a frame counter and removed the frame limiter found in XNA.
+We have presented multiple extensions to the original X-Toon shader developed by  ~\cite{BTM06a}.  In order to retain the speed of the X-Toon shader, we attempted to minimize the complexity of the code executed in our shaders. The code added for transparency and texture blending, as well as our new calculations for tone detail, resulted in minimal performance reductions. To investigate the performance of our code, we calculated the frames per second (FPS) and removed the fixed time step. Two nVidia Geforce GTX 470 in SLI mode and an Intel i5 processor on Windows 8 were used for the calculation. The values found in Table~\ref{tab:fps} show the resulting FPS of the new methods introduced in this paper compared to the original X-Toon shader. We have concluded that our results are within a suitable error threshold and do not hinder the original shader, performance-wise. This data does not take into account any errors that may have arisen from factors such as the operating system and background applications affecting the outcome. 
+In the two next sections, we will discuss future work that can be done to improve upon our methods outlined in this paper. First, we describe issues with alpha blending and a possible solution. Second, we discuss the effect of adding multiple lights to a scene and their performance implications.
 
 \begin{table}
 	\centering
 	\label{tab:fps}
-	\caption{Maximum frames per second SHOULD RECALCULATE}
-	\begin{tabular}{cc}
+	\caption{Frames per second (FPS) of each new technique compared to original X-Toon shading}
+	\begin{tabular}{cccc}
 		\hline
-    		Method  & Frames per second (max) \\
+    		Method  & FPS (average) & FPS (max) & \% difference \\
 		\hline\hline \\
-    		Original X-Toon  & 1132                       \\
-    		Light Direction & 1102                      \\
-		Angle & 1026 \\
-		Texture Blending & 1033 \\
-		Transparency & 1132 \\
+    		Original X-Toon  & 1348 & 1420  & -                     \\
+    		Light Direction & 1323 & 1435 & -1.85                     \\
+		Angle & 1354 & 1447 & 0.45 \\
+		Texture Blending & 1347 & 1430 & -0.07 \\
+		Transparency & 1345 & 1419 & -0.22 \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Alpha blending correction}
+Figure~\ref{fig:alpha_issue} demonstrates issues with alpha blending when using a tone detail texture with transparency. When a model is rendered, the polygons hidden from the camera's view should not be rendered. Unfortunately, we are using alpha blending while rendering which results in these polygons being visible. In future works, a different technique should be used to calculate whether a pixel should overwrite the original pixel colour based on the depth and position of the polygon. If a polygon is fully covered and has a deeper depth value, it should be excluded from the scene. The alpha channel should only be considered in the output pixel value returned from the pixel shader.
 
 \subsection{Lighting model}
+The most significant result pertains to the light direction technique outlined in Section~\ref{sec:light_dir}. The calculated difference from Table~\ref{tab:fps} resulted in a 1.85\% performance drop compared to the original X-Toon shader. This is the result of only using two lights for the detail calculation. This performance drop will only increase as more lights are added to a scene. When calculating the light direction, the shader loops over each light in the scene resulting in a linear complexity of $O(n)$. In future works, a different lighting model should be developed to interact with the shader. The method we have developed is not viable for complex scenes and is limited to a very small amount of lights before it begins to reduce performance significantly. 
 
 \section{Conclusion}
 \label{sec:conclusion}
-
+We have presented multiple extensions to the original X-Toon shader outlined by ~\cite{BTM06a}. Our texture blending method allow for artists to blend the original textures from a model with the calculated tone detail. Additionally, we have extended the original tone detail textures to allow transparency which creates see-through effects for a model. We have also outlined a new method for determining the shading based on lighting direction. Finally, a new method was created to calculate detail based on the the angle between a camera's look at vector and a model's surface normal. Combining the techniques outlined in this paper, a designer can achieve many new effects not possible in the original X-Toon shader.
 
 \bibliographystyle{acmsiggraph}
 \bibliography{paper}
