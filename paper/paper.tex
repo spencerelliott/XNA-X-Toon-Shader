@@ -150,6 +150,13 @@ The original X-Toon shader only supports the use of an opaque tone detail textur
 Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},~\ref{sec:blending}, and~\ref{sec:transparency}, we were able to develop new effects not possible with the original X-Toon shader. Figures~\ref{fig:hologram},~\ref{fig:stippleHatch1}, and~\ref{fig:stippleHatch2} use the same tone detail texture but result in different effects. This is achieved by mixing our techniques such as using the lighting directions outlined in~\ref{sec:light_dir} to create a hologram effect in Figure~\ref{fig:hologram}. Figure~\ref{fig:lightingResult} simulates self-shadowing. We use the textures from the original models and blend them with the tone detail texture found in Figure~\ref{fig:gradient}. This uses our texture blending technique described in Section~\ref{sec:blending}. Additionally, we were also able to have the self-shadowing effect interact with the lighting of the scene using the lighting directions as previously discussed.
 
 \begin{figure*}[h]
+ \centering
+ \includegraphics[width=5.5in]{images/alpha_issues}
+ \caption{Issues with alpha blending. The vertices on the front of the model can still be seen.}
+ \label{fig:alpha_issue}
+\end{figure*}
+
+\begin{figure*}[h]
 	\centering
 	\includegraphics[width=5.5in]{images/hologram}
 	\caption{A hologram-like result. Textures from the model are not used, and a noise texture is used. As the y-axis on the 2D Texture decreases, the amount of noise increases.}
@@ -195,13 +202,6 @@ Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},
   \centering
   \includegraphics[width=5.5in]{images/test}
   \caption{Using a 2D texture from the original paper, we create a unique result by mixing the model's texture colors and the colors from the tone detail texture.}
-\end{figure*}
-
-\begin{figure*}[h]
- \centering
- \includegraphics[width=5.5in]{images/alpha_issues}
- \caption{Issues with alpha blending. The vertices on the front of the model can still be seen.}
- \label{fig:alpha_issue}
 \end{figure*}
 
 \begin{figure*}[h]
