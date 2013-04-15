@@ -140,8 +140,8 @@ The original X-Toon shader only supports the use of an opaque tone detail textur
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=2.5in]{images/xtoon_shading_alpha}
-	\caption{Transparent tone detail texture}
+	\includegraphics[width=1.5in]{images/xtoon_shading_alpha}
+	\caption{Transparent tone detail texture. Note: the gray represents the transparency in the image.}
 	\label{fig:transparent_tone}
 \end{figure}
 
@@ -149,60 +149,60 @@ The original X-Toon shader only supports the use of an opaque tone detail textur
 \label{sec:results}
 Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},~\ref{sec:blending}, and~\ref{sec:transparency}, we were able to develop new effects not possible with the original X-Toon shader. Figures~\ref{fig:hologram},~\ref{fig:stippleHatch1}, and~\ref{fig:stippleHatch2} use the same tone detail texture but result in different effects. This is achieved by mixing our techniques such as using the lighting directions outlined in~\ref{sec:light_dir} to create a hologram effect in Figure~\ref{fig:hologram}. Figure~\ref{fig:lightingResult} simulates self-shadowing. We use the textures from the original models and blend them with the tone detail texture found in Figure~\ref{fig:gradient}. This uses our texture blending technique described in Section~\ref{sec:blending}. Additionally, we were also able to have the self-shadowing effect interact with the lighting of the scene using the lighting directions as previously discussed.
 
-\begin{figure}[h]
+\begin{figure*}[h]
 	\centering
 	\includegraphics[width=5.5in]{images/hologram}
 	\caption{Hologram result}
 	\label{fig:hologram}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[h]
+\begin{figure*}[h]
 	\centering
-	\includegraphics[width=4in]{images/inverse_lighting}
+	\includegraphics[width=5.5in]{images/inverse_lighting}
 	\caption{Inverse Lighting result}
 	\label{fig:inverseLighting}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[h]
+\begin{figure*}[h]
 	\centering
-	\includegraphics[width=4in]{images/lighting}
+	\includegraphics[width=5.5in]{images/lighting}
 	\caption{Lighting result}
 	\label{fig:lightingResult}
-\end{figure}
+\end{figure*}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=4in]{images/xtoon_shading_gradient}
+	\includegraphics[width=1.5in]{images/xtoon_shading_gradient}
 	\caption{Tone texture for lighting}
 	\label{fig:gradient}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure*}[h]
 	\centering
-	\includegraphics[width=4in]{images/stipple-hatch-result1}
+	\includegraphics[width=5.5in]{images/stipple-hatch-result1}
 	\caption{Stipple/hatching result}
 	\label{fig:stippleHatch1}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[h]
+\begin{figure*}[h]
 	\centering
-	\includegraphics[width=6in]{images/stipple-hatch-result2}
+	\includegraphics[width=5.5in]{images/stipple-hatch-result2}
 	\caption{Stipple/hatching result}
 	\label{fig:stippleHatch2}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[h]
+\begin{figure*}[h]
   \centering
-  \includegraphics[width=4in]{images/test}
+  \includegraphics[width=5.5in]{images/test}
   \caption{Sample illustration}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[h]
+\begin{figure*}[h]
  \centering
- \includegraphics[width=4in]{images/alpha_issues}
+ \includegraphics[width=5.5in]{images/alpha_issues}
  \caption{Issues with alpha blending. The vertices on the front of the model can still be seen.}
  \label{fig:alpha_issue}
-\end{figure}
+\end{figure*}
 
 
 \section{Discussion and Future Work}
@@ -216,10 +216,10 @@ In the two next sections, we will discuss future work that can be done to improv
 	\label{tab:fps}
 	\begin{tabular}{cccc}
 		\hline
-    		Method  & FPS (average) & FPS (max) & \% difference \\
+    		Method  & FPS (avg) & FPS (max) & \% difference \\
 		\hline\hline \\
-    		Original X-Toon  & 1348 & 1420  & -                     \\
-    		Light Direction & 1323 & 1435 & -1.85                     \\
+    		Original X-Toon  & 1348 & 1420  & -                  \\
+    		Light Direction & 1323 & 1435 & -1.85                \\
 		Angle & 1354 & 1447 & 0.45 \\
 		Texture Blending & 1347 & 1430 & -0.07 \\
 		Transparency & 1345 & 1419 & -0.22 \\
