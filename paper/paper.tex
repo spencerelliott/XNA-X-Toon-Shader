@@ -14,7 +14,7 @@
 
 \begin{abstract}
 
-The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading texture to 2D texture. The second dimension "corresponds to the desired 'tone detail'". In this paper, we look to extend the initial offering of the X-Toon shader and develop new methods for calculating shading values and tone detail. Additionally, we extend the original shader to allow the use of model textures and transparency within a tone detail texture. This gives artists the tools to create new effects that were not possible with original X-Toon shader.
+The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading texture to 2D texture. The second dimension ``corresponds to the desired `tone detail' ''. In this paper, we look to extend the initial offering of the X-Toon shader and develop new methods for calculating shading values and tone detail. Additionally, we extend the original shader to allow the use of model textures and transparency within a tone detail texture. This gives artists the tools to create new effects that were not possible with original X-Toon shader.
 
 \end{abstract}
 
@@ -34,7 +34,7 @@ The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading te
 
 A brief explanation of X-Toon is described in Section~\ref{sec:tonedetail}, our extensions in Section~\ref{sec:extensions}, and the results in Section~\ref{sec:results}. Discussion and future work are described in Section~\ref{sec:discussion} and finally the conclusion in Section~\ref{sec:conclusion}.
 
-To make our program more interactive, we developed a GUI using the XNA GUI framework from ~\cite{Ruminate}. The controls allows the user to modify the parameters and enabled/disable features.
+To make our program more interactive, we developed a GUI using the XNA GUI framework from ~\cite{Ruminate}. The controls allows the user to modify the parameters and enable/disable features.
 
 \section{Tone Detail}
 \label{sec:tonedetail}
@@ -66,7 +66,7 @@ As in the original X-Toon paper, one attribute map uses the focal distance of th
 
 \subsection{Angle}
 \label{sec:angle}
-We introduce a new attribute map based on the angles of the {\it{look at}} of the camera and the surface normal. The look at vector is the direction that the camera is pointed. The angle between the two vectors is calculated using Equation~\ref{eqn:angle}, which is derived from the formula for dot product.
+We introduce a new attribute map based on the angles of the {\it{look at}} vector of the camera and the surface normal. The look at vector is the direction that the camera is pointed. The angle between the two vectors is calculated using Equation~\ref{eqn:angle}, which is derived from the formula for dot product.
 
 \begin{equation}
 \label{eqn:angle}
@@ -147,7 +147,7 @@ The original X-Toon shader only supports the use of an opaque tone detail textur
 
 \section{Results}
 \label{sec:results}
-Using the new methods outlined in Sections~\ref{sec:angle}, ~\ref{sec:light_dir}, ~\ref{sec:blending}, and ~\ref{sec:transparency}, we were able to develop new effects not possible with the original X-Toon shader. Figures~\ref{fig:hologram}, ~\ref{fig:stippleHatch1}, and ~\ref{fig:stippleHatch2} use the same tone detail texture but result in different effects. This is achieved by mixing our techniques such as using the lighting directions outlined in ~\ref{sec:light_dir} to create a hologram effect in Figure~\ref{fig:hologram}. Figure~\ref{fig:lightingResult} simulates self-shadowing. We use the textures from the original models and blend them with the tone detail texture found in Figure~\ref{fig:gradient}. This uses our texture blending technique described in Section~\ref{sec:blending}. Additionally, we were also able to have the self-shadowing effect interact with the lighting of the scene using the lighting directions as previously discussed.
+Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},~\ref{sec:blending}, and~\ref{sec:transparency}, we were able to develop new effects not possible with the original X-Toon shader. Figures~\ref{fig:hologram},~\ref{fig:stippleHatch1}, and~\ref{fig:stippleHatch2} use the same tone detail texture but result in different effects. This is achieved by mixing our techniques such as using the lighting directions outlined in~\ref{sec:light_dir} to create a hologram effect in Figure~\ref{fig:hologram}. Figure~\ref{fig:lightingResult} simulates self-shadowing. We use the textures from the original models and blend them with the tone detail texture found in Figure~\ref{fig:gradient}. This uses our texture blending technique described in Section~\ref{sec:blending}. Additionally, we were also able to have the self-shadowing effect interact with the lighting of the scene using the lighting directions as previously discussed.
 
 \begin{figure}[h]
 	\centering
@@ -212,8 +212,8 @@ In the two next sections, we will discuss future work that can be done to improv
 
 \begin{table}
 	\centering
-	\label{tab:fps}
 	\caption{Frames per second (FPS) of each new technique compared to original X-Toon shading}
+	\label{tab:fps}
 	\begin{tabular}{cccc}
 		\hline
     		Method  & FPS (average) & FPS (max) & \% difference \\
