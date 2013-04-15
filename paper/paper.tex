@@ -1,7 +1,7 @@
 \documentclass[annual]{acmsiggraph}
 \usepackage{wrapfig}
 \usepackage{hyperref}
-\title{X\texorpdfstring{\textsuperscript{2}}-Toon: An Extended X-Toon Shader}
+\title{X\texorpdfstring{\textsuperscript{2}}.-Toon: An Extended X-Toon Shader}
 
 \author{Robert Wolfe\thanks{e-mail:robert\_wolfe@carleton.ca}\\Spencer Elliott\thanks{e-mail:spencer\_elliott@carleton.ca}}
 \pdfauthor{Robert Wolfe, Spencer Elliott}
@@ -14,7 +14,7 @@
 
 \begin{abstract}
 
-The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading texture to 2D texture. The second dimension ``corresponds to the desired `tone detail' ''. In this paper, we look to extend the initial offering of the X-Toon shader and develop new methods for calculating shading values and tone detail. Additionally, we extend the original shader to allow the use of model textures and transparency within a tone detail texture. This gives artists the tools to create new effects that were not possible with original X-Toon shader.
+The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading textures to 2D textures. The second dimension ``corresponds to the desired `tone detail' ''. In this paper, we look to extend the initial offering of the X-Toon shader and develop new methods for calculating shading values and tone detail. Additionally, we extend the original shader to allow the use of model textures and transparency within a tone detail texture. This gives artists the tools to create new effects that were not possible with original X-Toon shader.
 
 \end{abstract}
 
@@ -248,7 +248,7 @@ Figure~\ref{fig:alpha_issue} demonstrates issues with alpha blending when using 
 The most significant result pertains to the light direction technique outlined in Section~\ref{sec:light_dir}. The calculated difference from Table~\ref{tab:fps} resulted in a 1.85\% performance drop compared to the original X-Toon shader. This is the result of only using two lights for the detail calculation. This performance drop will only increase as more lights are added to a scene. When calculating the light direction, the shader loops over each light in the scene resulting in a linear complexity of $O(n)$. In future works, a different lighting model should be developed to interact with the shader. The method we have developed is not viable for complex scenes and is limited to a very small amount of lights before it begins to reduce performance significantly. 
 
 \subsection{Animated tone detail texture}
-We also discussed the possibility of using an animated tone detail texture in lieu of a static image. This could create many new effects such as hologram noise and colour shifting without the need to change tone detail or shading values. Futures works should investigate the use of an animated tone detail texture and devise new effects that can be generated with this method.
+We also discussed the possibility of using an animated tone detail texture in lieu of a static image. This could create many new effects such as hologram noise and colour shifting without the need to change tone detail or shading values. Future works should investigate the use of an animated tone detail texture and devise new effects that can be generated with this method.
 
 \section{Conclusion}
 \label{sec:conclusion}
