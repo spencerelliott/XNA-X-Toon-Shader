@@ -159,21 +159,21 @@ Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},
 \begin{figure*}[h]
 	\centering
 	\includegraphics[width=5.5in]{images/inverse_lighting}
-	\caption{Inverse Lighting result}
+	\caption{Inverse Lighting result. The model appears to be lit from the opposite direction but no lighting variables or directions have been altered.}
 	\label{fig:inverseLighting}
 \end{figure*}
 
 \begin{figure*}[h]
 	\centering
 	\includegraphics[width=5.5in]{images/lighting}
-	\caption{Lighting result}
+	\caption{Lighting result. The model appears to self-shadow itself using only the tone detail texture.}
 	\label{fig:lightingResult}
 \end{figure*}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.5in]{images/xtoon_shading_gradient}
-	\caption{Tone texture for lighting}
+	\caption{Tone texture for lighting. This gives the effect of self-shadowing on a model, especially when combined with lighting directions.}
 	\label{fig:gradient}
 \end{figure}
 
@@ -204,6 +204,20 @@ Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},
  \label{fig:alpha_issue}
 \end{figure*}
 
+\begin{figure*}[h]
+ \centering
+ \includegraphics[width=5.5in]{images/dissolve}
+ \caption{A dissolving effect. Using the lighting directions and the generated tone detail texture we were able to give the impression of the model dissolving in and out of view.}
+ \label{fig:dissolve}
+\end{figure*}
+
+\begin{figure*}[h]
+ \centering
+ \includegraphics[width=5.5in]{images/metallic}
+ \caption{A metallic sheen effect. The light directions give the model a metallic look as the tone detail texture reacts to new directions.}
+ \label{fig:metallic}
+\end{figure*}
+
 
 \section{Discussion and Future Work}
 \label{sec:discussion}
@@ -232,6 +246,9 @@ Figure~\ref{fig:alpha_issue} demonstrates issues with alpha blending when using 
 
 \subsection{Lighting model}
 The most significant result pertains to the light direction technique outlined in Section~\ref{sec:light_dir}. The calculated difference from Table~\ref{tab:fps} resulted in a 1.85\% performance drop compared to the original X-Toon shader. This is the result of only using two lights for the detail calculation. This performance drop will only increase as more lights are added to a scene. When calculating the light direction, the shader loops over each light in the scene resulting in a linear complexity of $O(n)$. In future works, a different lighting model should be developed to interact with the shader. The method we have developed is not viable for complex scenes and is limited to a very small amount of lights before it begins to reduce performance significantly. 
+
+\subsection{Animated tone detail texture}
+We also discussed the possibility of using an animated tone detail texture in lieu of a static image. This could create many new effects such as hologram noise and colour shifting without the need to change tone detail or shading values. Futures works should investigate the use of an animated tone detail texture and devise new effects that can be generated with this method.
 
 \section{Conclusion}
 \label{sec:conclusion}
