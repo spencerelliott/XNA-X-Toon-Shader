@@ -27,7 +27,7 @@ The X-toon shader ~\cite{BTM06a} extended classic cel shading from 1D shading te
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.5in]{images/classic_cel2}
+	\includegraphics[width=2.5in]{images/classic_cel2}
 	\caption{Classic Toon Shading}
 	\label{fig:toonshade}
 \end{figure}
@@ -47,7 +47,7 @@ To make our program more interactive, we developed a GUI using the XNA GUI frame
   \vspace{-10pt}
   \label{fig:2dtexture}
 \end{wrapfigure}
-X-Toon extends the regular toon shader by adding a second dimension to the texture. The x-axis remains as $N\cdot L$, where {\it{N}} is the surface normal and {\it{L}} is the light direction. The y-axis represents the level of detail. The higher up on the axis, the less detail is used. Conversely, the lower the y-axis value, the more detail. An example of a 2D texture used in this application can be seen in Figure~\ref{fig:2dtexture} (note the y-axis increases downward).
+X-Toon extends the regular toon shader by adding a second dimension to the texture. The x-axis remains as $N\cdot L$, where {\it{N}} is the surface normal and {\it{L}} is the light direction. The y-axis represents the level of detail. The higher up on the axis, the less detail is used. Conversely, the lower the y-axis value, the more detail. An example of a 2D tone detail texture used in this application can be seen in Figure~\ref{fig:2dtexture} (note the y-axis increases downward).
 
 The method of computing the y-axis depends on an {\it{attribute map.}} The chosen attribute changes the level of detail, depending on its value. The original paper provided two possible attribute maps: distance and orientation. This paper deals exclusively with the distance attribute mapping. We provide an alternative mapping involving the angle between the camera {\it{look at}} vector and surface normal. 
 
@@ -55,7 +55,7 @@ In addition to providing an alternate attribute mapping, we also developed a new
 
 \subsection{Distance}
 \label{sec:distance}
-As in the original X-Toon paper, one attribute map uses the focal distance of the vertex to the camera. The larger this distance, the less detail will be used, abstracting the model. The smaller this distance, the more detail used. Nothing was changed from the original paper. An example result can be seen in Figure~\ref{fig:distanceResult}, using a transparent texture map (see Section~\ref{sec:transparency}).
+As in the original X-Toon paper, one attribute map uses the focal distance of the vertex to the camera. The larger this distance, the less detail will be used, abstracting the model. The smaller this distance, the more detail used. Nothing was changed from the original paper. An example result can be seen in Figure~\ref{fig:distanceResult}, using a transparent tone detail texture (see Section~\ref{sec:transparency}).
 
 \begin{figure}[h]
 	\centering
@@ -73,12 +73,12 @@ We introduce a new attribute map based on the angles of the {\it{look at}} vecto
 a = \cos^{-1}{(-LookAt \cdot Normal / |LookAt||Normal|)}
 \end{equation}
 
-The negative of the look at vector is used because it is pointed towards the surface (see Figure~\ref{fig:angle}). This value indicates what surfaces the camera is directly pointed at. The amount of detail used decreases as the angle between the look at vector and the surface normal approaches $180^\circ$, or when the surface is completely pointed away from the camera (or vice versa). As the angle approaches 0, more detail is used. An example result of this attribute map can be seen in Figure~\ref{fig:angleResult}.
+The negative of the look at vector is used because it is pointed towards the surface (see Figure~\ref{fig:angle}). This value indicates what surfaces the camera is directly pointed at. The amount of detail used decreases as the angle between the look at vector and the surface normal approaches $180^\circ$, or when the surface is completely pointed away from the camera (or vice versa). As the angle approaches 0, more detail is used. An example result of this attribute map using a transparent tone detail texture can be seen in Figure~\ref{fig:angleResult}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=2.5in]{images/angle_result}
-	\caption{An example result of the angle attribute map/}
+	\caption{An example result generated using the angle attribute map. Surfaces that are facing the camera have more detail, while those angled away from the camera are more transparent.}
 	\label{fig:angleResult}
 \end{figure}
 
@@ -129,7 +129,7 @@ We have added the ability to blend textures from a model into the calculation of
 
 \subsection{Texture transparency}
 \label{sec:transparency}
-The original X-Toon shader only supports the use of an opaque tone detail texture. We extend the shader to support the alpha channel of a tone detail texture to allow the use of transparency. Our method allows blending with original model's texture described in Section~\ref{sec:blending} or with the original method of using colour directly from the tone detail map. An example of transparency in a tone detail map can be seen in Figure~\ref{fig:transparency}. This example uses the tone detail texture shown in Figure~\ref{fig:transparent_tone}. The model is positioned so the detail is approximately at half. This gives each vertex an alpha of about 0.5 and the result is a model that is considerably transparent.
+The original X-Toon shader only supports the use of an opaque tone detail texture. We extend the shader to support the alpha channel of a tone detail texture to allow the use of transparency. Our method allows blending with original model's texture described in Section~\ref{sec:blending} or with the original method of using colour directly from the tone detail texture. An example of transparency in a tone detail texture can be seen in Figure~\ref{fig:transparency}. This example uses the tone detail texture shown in Figure~\ref{fig:transparent_tone}. The model is positioned so the detail is approximately at half. This gives each vertex an alpha of about 0.5 and the result is a model that is considerably transparent.
 
 \begin{figure}[h]
 	\centering
@@ -194,7 +194,7 @@ Using the new methods outlined in Sections~\ref{sec:angle},~\ref{sec:light_dir},
 \begin{figure*}[h]
   \centering
   \includegraphics[width=5.5in]{images/test}
-  \caption{Using a 2D texture from the original paper, we create a unique result by mixing the model's texture colors and the colors from the detail map.}
+  \caption{Using a 2D texture from the original paper, we create a unique result by mixing the model's texture colors and the colors from the tone detail texture.}
 \end{figure*}
 
 \begin{figure*}[h]
